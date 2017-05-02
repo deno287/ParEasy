@@ -1,0 +1,380 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>	
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>	
+						<li><a href="guide.html"> Guide </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+	<script>	
+		var ma_subor = false;
+		var query = window.location.search.substring(1);
+		var vars = query.split("&");
+		var user = vars[0];
+		var project = vars[1];
+		var CPU_data;
+		var GPU_data;
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+				
+		$(document).ready(function(){
+		
+			socket.on('reading file', function (data) {
+				socket.emit('reading file data', { id:user, project:project});
+				socket.on('the read result', function (read) {
+					if (read['info'] == "ok"){
+						editor.setValue(read['file1']);
+						editor2.setValue(read['file2']);
+						editor3.setValue(read['file3']);
+						editor4.setValue(read['file4']);
+						editor5.setValue(read['file5']);
+					}
+				});	
+			});
+		});
+		
+		$(function() {
+			$("a").attr('href', function(i, h) {
+				if(h != 'javascript:;'){
+					return h +"?"+user;				
+				}
+			});
+		});
+
+		function open1(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "block";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "none";
+			document.getElementById('function_plus').style.display = "none";
+			$('#open1').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+			$('#open5').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open2(){
+			document.getElementById('function_core').style.display = "block";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "none";
+			document.getElementById('function_plus').style.display = "none";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+			$('#open5').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open3(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "block";
+			document.getElementById('function_take').style.display = "none";
+			document.getElementById('function_plus').style.display = "none";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+			$('#open5').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open4(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "block";
+			document.getElementById('function_plus').style.display = "none";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open5').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open5(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "none";
+			document.getElementById('function_plus').style.display = "block";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+			$('#open5').css({"background-color":"#66ffff", "text-decoration":"none"});
+		}
+		
+	function get_name(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		//console.log(project_id);
+		window.location.href = './exercise_2_name.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_create(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		//console.log(project_id);
+		window.location.href = './exercise_4_data.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_select(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		//console.log(project_id);
+		window.location.href = './exercise_3_structures.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function addFunction(){
+		$('#addFunction').hide();
+		$('aside').append("<a href='javascript:;' id='open5' onclick='open5();'>help_functions</a>​<br />");
+		document.getElementById('function_core').style.display = "none";
+		document.getElementById('function_start').style.display = "none";
+		document.getElementById('function_prepare').style.display = "none";
+		document.getElementById('function_take').style.display = "none";
+		document.getElementById('function_plus').style.display = "block";
+		$('#open5').css({"background-color":"#66ffff", "text-decoration":"none", "display":"block", "width":"90%", "padding":"3px"});
+		$('#open1').css({"background-color":"white", "text-decoration":"none"});
+		$('#open2').css({"background-color":"white", "text-decoration":"none"});
+		$('#open3').css({"background-color":"white", "text-decoration":"none"});
+		$('#open4').css({"background-color":"white", "text-decoration":"none"});		
+	}
+	
+	function saveFunctions(){
+		var edit1 = editor.getValue();
+		var edit2 = editor2.getValue();
+		var edit3 = editor3.getValue();
+		var edit4 = editor4.getValue();
+		var edit5 = editor5.getValue();
+		var edit6 = editor6.getValue();
+		
+		var edit1_copy = edit1;
+		var add = edit1_copy.split("parallel.buildProgram(");
+		add[1] = "source,"+add[1];
+		edit1_copy = add[0] + "parallel.buildProgram("+ add[1];
+		
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('saving file', function (data) {
+			socket.emit('sending file', { id:user, project:project});
+			socket.on('get files', function (data) {
+				socket.emit('super file', { file1:edit1, file2:edit2, file3:edit3, file4:edit4, file5:edit5, file6:edit6, file7:edit1_copy });
+			});
+		});
+	}
+	
+	function try_it(){
+	/*
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('trying', function (data) {
+			socket.emit('try file', { user_id: user, project_id:project });
+			window.open("./results.html");
+		});
+		*/
+		
+		window.open('./results.html?'+user+'&'+project);
+	}
+	
+	$(document).ready(function(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('get images', function(data){
+			socket.emit('data for images', {user:user, project:project});
+			socket.on('image back', function(data){
+				var img = $('<img id="dynamic">');
+				img.attr('src', data['file']);
+				img.attr('height', 150);
+				img.attr('width', 150);
+				img.appendTo('#images');
+				var br = $('<br>');
+				br.appendTo('#images');
+			});
+			socket.emit('have images', {id:'ok'});
+			socket.on('send imgs', function(data){
+				//console.log(data);
+				var files = data['imgs'];
+				for(var i=0; i<files.length; i++){
+					document.getElementById('images').innerHTML += '<br />'+files[i];
+				}	
+			});
+		});
+	});
+
+	</script>
+	
+<div id="nav" class="row">
+    <div id="box1" class="col-md-4" onclick="saveFunctions();get_name();"> <b>Change name</b> </div>
+	<div id="box3" class="col-md-4" onclick="saveFunctions();get_select();"> <b>Select structures</b> </div>
+	<!--<div id="box3" class="col-md-4" onclick="saveFunctions();get_create();"> <b>Create data</b> </div>-->
+</div>	
+	
+<div class="container">
+	
+	<aside>
+		<a href="javascript:;" id="open1" onclick="open1();" style="display:block;width:90%;padding:3px;">start</a>
+		<a href="javascript:;" id="open2" onclick="open2();" style="display:block;width:90%;padding:3px;">core</a>
+		<a href="javascript:;" id="open3" onclick="open3();" style="display:block;width:90%;padding:3px;">prepare_data</a>
+		<a href="javascript:;" id="open4" onclick="open4();" style="display:block;width:90%;padding:3px;">take_data</a>
+		<a href="javascript:;" id="addFunction" onclick="addFunction();" style="display:block;width:90%;padding:3px;cursor:pointer;"> + </a>
+	</aside>
+	
+	<section>
+	<div class="col-xs-6" id="function_start" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor">			
+</div>	
+<!--   END OF THE CONTENT   -->		
+<script>
+	var editor = ace.edit("editor");
+	editor.setTheme("ace/theme/tomorrow_night_blue");
+	var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+	editor.session.setMode(new JavaScriptMode());
+</script>			
+</div>
+	
+<div class="col-xs-6" id="function_core" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor2">
+</div>	
+<!--   END OF THE FUNCTION HERE   -->
+	<script>
+		var editor2 = ace.edit("editor2");
+		editor2.setTheme("ace/theme/tomorrow_night_blue");
+		var JavaScriptMode2 = ace.require("ace/mode/c_cpp").Mode;
+		editor2.session.setMode(new JavaScriptMode2());
+	</script>			
+</div>
+	
+<div class="col-xs-6" id="function_prepare" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div  id="editor3">
+</div>	
+<!--   END OF THE FUNCTION HERE   -->
+	<script>
+		var editor3 = ace.edit("editor3");
+		editor3.setTheme("ace/theme/tomorrow_night_blue");
+		var JavaScriptMode3 = ace.require("ace/mode/javascript").Mode;
+		editor3.session.setMode(new JavaScriptMode3());
+	</script>			
+</div>
+	
+<div class="col-xs-6" id="function_take" style="display:none;">	
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor4">		
+</div>	
+<!--   END OF THE FUNCTION HERE   -->				
+	<script>
+		var editor4 = ace.edit("editor4");
+		editor4.setTheme("ace/theme/tomorrow_night_blue");
+		var JavaScriptMode4 = ace.require("ace/mode/javascript").Mode;
+		editor4.session.setMode(new JavaScriptMode4());
+	</script>			
+</div>
+	
+<div class="col-xs-6" id="function_plus" style="display:none;">
+	<div id="editor5">
+	</div>		
+	<script>
+		var editor5 = ace.edit("editor5");
+		editor5.setTheme("ace/theme/tomorrow_night_blue");
+		var JavaScriptMode5 = ace.require("ace/mode/javascript").Mode;
+		editor5.session.setMode(new JavaScriptMode5());
+	</script>			
+</div>
+	
+<div class="col-xs-6" id="prepared_node" style="display:none;">
+<div id="editor6">
+var parallel = require('../../../parallel.js');
+var fs = require('fs');
+var source = parallel.readCore(__dirname + "/core.cl");
+var kern = parallel.buildProgram(source, "core");
+			
+			</div>		
+			<script>
+				var editor6 = ace.edit("editor6");
+				editor6.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode6 = ace.require("ace/mode/javascript").Mode;
+				editor6.session.setMode(new JavaScriptMode6());
+			</script>			
+	</div>
+	
+	</section>
+	
+</div>
+
+	<div id="images">
+	</div>
+
+	<div id="menuButtons">
+		<button id="save_functions" class="btn btn-success" onclick="saveFunctions()">SAVE</button>
+		<button id="run_but" class="btn btn-info" onclick="try_it();">RUN</button>
+	</div>
+</script>
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

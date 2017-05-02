@@ -1,0 +1,31 @@
+void  unlock(int i, uint *number) {
+      number[i] = 0;
+  }
+
+
+void lock(int i, uint *entering, uint *number) 
+{
+/*
+      entering[i] = 1;
+      uint max = 0;
+      for (int j = 0; j < NUM_THREADS; j++)
+         if (max < number[j]) max = number[j];
+      number[i] = 1 + max;
+      entering[i] = 0;
+
+      for (int j = 1; j <= NUM_THREADS; j++) 
+      {
+          // Wait until thread j receives its number:
+          while (entering[j]) 
+          { 
+              // do nothing 
+          }
+          // Wait until all threads with smaller numbers or with the same
+          // number, but with higher priority, finish their work:
+          while ((number[j] != 0) && ( (number[j] < number[i]) || ((number[j] == number[i]) && (j < i)))) 
+          { 
+            // nothing 
+          }
+      }
+*/
+  }

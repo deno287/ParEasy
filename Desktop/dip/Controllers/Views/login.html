@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>		
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome_logout.html"> Home </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="login.html">Login</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<script>
+
+function controlUser(em,pswd){
+  var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});	
+  socket.on('news', function (data) {
+    socket.emit('my other event', { em: em, pswd: pswd});
+	socket.on('info', function (info,id) {
+		if (info['info'] == 1){
+			window.location.href = './welcome.html?'+info['id'];
+		}
+		});
+  });
+}
+
+function registerUser(rem,rname,rsur,rpass){
+  var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+  socket.on('reg', function (data) {
+	if (rem != '' && rname != '' && rsur != '' && rpass!= ''){
+		socket.emit('reg data', { rem: rem, rname: rname, rsur: rsur, rpass: rpass});
+		socket.on('reload', function (reload) {
+		if (reload['reload']){
+			window.location.href = './login.html';
+		}
+		});
+	}
+	else {
+		//alert('CHYBA');
+	}
+  });
+}
+</script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-xs-6" id="login_panel">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Login<a style="float:right;" class="btn btn-info btn-xs" role="button" onClick="document.getElementById('register_panel').style.display = 'inline'; document.getElementById('login_panel').style.display = 'none';">Sign up</a></h3>
+			  </div>
+			  <div class="panel-body">
+			    <fieldset>
+					<form id="login">
+					 	<div class="form-group">
+							<label for="InputEmail" class="col-sm-2 control-label">Email</label>
+							<div class="col-sm-10">
+								<input id="InputEmail" type="Email" name="InputEmail" value="Email" class="form-control" placeholder="Enter email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="InputPassword" class="col-sm-2 control-label">Password</label>
+							<div class="col-sm-10">
+								<input id="InputPassword" type="Password" name="InputPassword" value="passowrd" class="form-control" placeholder="Password">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
+								<button type="button" name="submit" class="btn btn-default" onclick="controlUser($('#InputEmail').val(),$('#InputPassword').val());">Login</button>
+							</div>
+						</div>
+					</form> 
+				</fieldset>
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-6" id="register_panel">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">Sign Up<a style="float:right;" class="btn btn-info btn-xs" role="button" onClick="document.getElementById('login_panel').style.display = 'inline'; document.getElementById('register_panel').style.display = 'none';">Login</a></h3>
+			  </div>
+			  <div class="panel-body">
+			    <fieldset>
+			    	<form id="register">
+					 	<div class="form-group">
+							<label for="RegEmail" class="col-sm-4 control-label">Email</label>
+							<div class="col-sm-6">
+								<input id="RegEmail" type="email" name="RegEmail" value="" class="form-control" placeholder="Enter email">
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="RegName" class="col-sm-4 control-label">First Name</label>
+							<div class="col-sm-6">
+								<input id="RegName" type="text" name="RegName" value="" class="form-control" placeholder="Enter first name">
+							</div>	
+						</div>
+						<div class="form-group">
+							<label for="RegSurname" class="col-sm-4 control-label">Last Name</label>
+							<div class="col-sm-6">
+								<input id="RegSurname" type="text" name="RegSurname" value="" class="form-control" placeholder="Enter last name">
+							</div>
+						</div>						
+						<div class="form-group">
+							<label for="RegPassword1" class="col-sm-4 control-label">Password</label>
+							<div class="col-sm-6">
+								<input id="RegPassword1" type="password" name="RegPassword1" value="" class="form-control" placeholder="Password">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-4 col-sm-8">
+								<button type="button" name="submit" class="btn btn-default" onClick="registerUser($('#RegEmail').val(),$('#RegName').val(),$('#RegSurname').val(),$('#RegPassword1').val());"">Sign up</button>
+							</div>
+						</div>
+						<br />
+						<br />
+					</form> 
+				</fieldset>
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

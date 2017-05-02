@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>
+						<li><a href="guide.html"> Guide </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<script>
+
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	var user = vars[0];
+	var project = vars[1];
+	
+	$(document).ready(function(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('name', function (data) {
+			socket.emit("name id", {id:project});
+			socket.on("name data", function(data){
+				var projectName = data['project_name'];
+				var projectDesc = data['project_desc'];
+				$("#projectName").val(projectName);
+				$("#description").val(projectDesc);
+			})
+		});
+	});
+				
+	$(function() {
+		$("a").attr('href', function(i, h) {
+			return h +"?"+user;
+		});
+	});
+
+	function updateProjectName(){
+		var name = $('#projectName').val();
+		var description = $('#description').val();
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('start thinking', function (data) {
+		socket.emit('sendNewName', { send: name, desc:description });
+		socket.on('updateResult', function (reload) {
+		if (reload['reload']){
+			window.location.href = './exercise_3_structures.html?'+user+'&'+reload['id'];
+		}
+		});
+		});		
+	}
+	
+	function get_select(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_3_structures.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_create(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_4_data.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_functions(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_5_functions.html?'+user+'&'+project_id;
+		});
+	}
+	
+</script>
+
+<div id="nav" class="row">
+	<div id="box1" class="col-md-4" onclick="updateProjectName();get_select();"> <b>Select structures</b> </div>
+	<!--<div id="box2" class="col-md-4" onclick="updateProjectName();get_create();"> <b>Create data</b> </div>-->
+	<div id="box3" class="col-md-4" onclick="updateProjectName();get_functions();"> <b>Functions</b> </div>
+</div>
+<br />
+<div class="container">
+	<div class="form-group">
+	  <label for="comment">Project name:</label>
+	  <textarea class="form-control" rows="1" id="projectName" style="width: 300px;"></textarea>
+	</div>
+	<br />
+	<div class="form-group">
+		<label for="description">Project description:</label>
+		<textarea class="form-control" rows="3" id="description"></textarea>
+	</div>
+	<br />
+</div>
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

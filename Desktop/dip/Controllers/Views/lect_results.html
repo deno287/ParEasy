@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="./vis/vis.min.js"></script>	
+	<link href="./vis/vis.min.css" rel="stylesheet" type="text/css">
+	
+	<style>
+		body {
+			background-color: black;
+			color: white;
+		}
+	</style>
+	<script>	
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	var project = vars[0];
+	var history_array = [];
+	
+	$(document).ready(function(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.emit("want title", {id: project});
+		socket.on("sending title", function(data){
+			$('#title').html(data['title']);
+			$('#popis').html(data['desc']);
+		})
+		$('#timePast').html("<i>State: </i> <b style='color:green;'>ready</b>");
+		var screenX = $( window ).width();
+		var screenY = $( window ).height();
+		console.log(screenX, screenY);
+		var c=document.getElementById("canvas");
+		var ctx=c.getContext("2d");
+		if (screenX > 1400){
+			ctx.canvas.width = (screenX-390);
+			$('#text').attr("cols", 269);
+			$('#popis').css("width", "350px");
+		}
+		else if (screenX <= 1400){
+			ctx.canvas.width = (screenX-400);
+			$('#text').attr("cols", 188);
+			$('#popis').css("width", "350px");
+		}
+		if (screenY > 680){
+			ctx.canvas.height = (screenY/1.8);
+			$('#text').attr("rows", 2);
+			$('#popis').css("height", "530px");
+		}
+		else if (screenY <= 680){
+			ctx.canvas.height = (screenY/2.0);
+			$('#text').attr("rows", 2);
+			$('#popis').css("height", "340px");
+		}
+	});
+	
+	var output;
+	var names;
+	var blank = true;
+	var nodes_array =[];
+	var kreslim = false;
+	var countOfUp = 0;
+	
+	function getText(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		var text = $('textarea#text').val();
+		var command = "";
+		
+		var x1 = 5;
+		var y1 = 5;
+		var width = 55;
+		var height = 35;
+		var x2 = 7;
+		var y2 = 35;
+		
+		if (text.includes("run")){
+			history_array.push(text);
+			reload_history();
+			socket.on('new lecture', function(data){
+				socket.emit('new lecture data', {project:project});
+				socket.on('new lecture result', function(res){
+					output = res['res'];
+					names = res['names'];
+					$('#timePast').html("<i>State: </i> <b style='color:green;'>running</b>");
+				})
+			});
+		}
+		
+		else if (text.includes("parallel.printResult")){
+			history_array.push(text);
+			reload_history();
+			text = text.split("parallel.printResult(");
+			text = text[1].split(")");
+			var elem = (text[0]);
+			var index = names.indexOf(elem);
+			var data = output[index];
+				for (item in data){
+					$('#textResult').append("<span>"+data[item]+"</span>");
+					$('#textResult').append("<span>"+" "+"</span>");
+					$('#timePast').html("<i>State: </i> <b style='color:green;'>printing</b>");
+				}
+				$('#textResult').append("<br />");
+		}
+		
+		else if (text.includes("parallel.draw")){
+			history_array.push(text);
+			reload_history();
+			$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing</b>");
+			if (blank == false){
+				y1 += 45;
+				y2 += 45;
+				x1 = 5;
+				x2 = 7;
+			}
+			text = text.split("parallel.draw");
+			text = text[1].split("(");
+			text = text[1].split(")");
+			var params = text[0].split(",");
+			var type = params[1];
+			
+			var elem = (params[0]);
+			var index = names.indexOf(elem);
+			var data = output[index];
+			var c=document.getElementById("canvas");
+			var ctx=c.getContext("2d");
+			if (type==" 1D"){
+				blank = false;
+				for (item in data){
+					ctx.strokeStyle="red";
+					ctx.rect(x1,y1,width,height);
+					ctx.font="30px Arial";
+					ctx.fillStyle = "white";
+					ctx.fillText(data[item], x2, y2);
+					ctx.stroke();
+					x1 += 65;
+					x2 += 65;
+					if ((item !=0) && (item%19 == 18)){
+						y1 += 45;
+						y2 += 45;
+						x1 = 5;
+						x2 = 7;
+					}
+				}
+				y1 += 45;
+				y2 += 45;
+				x1 = 5;
+				x2 = 7;
+			}
+			else if ((type==" 2D") || (type=="matrix")){
+				blank = false;
+				var cols = parseInt(params[2]);
+				var rows = parseInt(params[3]);
+				for (item in data){
+					ctx.strokeStyle="red";
+					ctx.rect(x1,y1,width,height);
+					ctx.font="30px Arial";
+					ctx.fillStyle = "white";
+					ctx.fillText(data[item], x2, y2);
+					ctx.stroke();
+					x1 += 65;
+					x2 += 65;
+					if ((item !=0) && (item%cols == (cols-1))){
+						y1 += 45;
+						y2 += 45;
+						x1 = 5;
+						x2 = 7;
+					}
+				}
+				y1 += 45;
+				y2 += 45;
+				x1 = 5;
+				x2 = 7;
+			}
+			else if (type==" graph"){
+				blank = false;
+				var count = Object.keys(data).length;
+				count = Math.sqrt(count);
+				console.log(data);
+				for (var i=0; i<count; i++){
+					//if (i == 0){
+						var centerX = Math.ceil((Math.random()*(ctx.canvas.width))-10);
+						var centerY = Math.ceil((Math.random()*(ctx.canvas.height))-10);
+					//}
+					/*
+					else{
+						if ((data[(i-1)+i*count] != 50) && (data[(i-1)+i*count] != 0) ){
+							var centerX = nodes_array[i-1][0];
+							var centerY = nodes_array[i-1][1];
+							var distance = (data[(i-1)+i*count])/2;
+							var c = distance*30;
+							centerX = centerX+c;
+							centerY = centerY+c;
+						}
+						else{
+							var centerX = Math.ceil((Math.random()*ctx.canvas.width)-10);
+							var centerY = Math.ceil((Math.random()*ctx.canvas.height)-10);
+						}
+					}
+					*/
+					nodes_array.push([centerX, centerY]);
+					var radius = 10;
+					ctx.beginPath();
+					ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+					ctx.fillStyle = 'red';
+					ctx.fill();
+					ctx.fillStyle = "white";
+					ctx.font = 'italic 12pt Calibri';
+					ctx.fillText(("v"+(i+1)), centerX-5, centerY+5);
+					ctx.lineWidth = 2;
+					ctx.strokeStyle = '#00e6e6';
+					ctx.stroke();
+				}
+				var row = 0;
+				var infinity = count*10;
+				while (row < count){
+					for (var col=0; col<count; col++){
+						if (row != col){
+							var object = (row*count)+col;
+							if ((data[object] != 0) && (data[object] != infinity)){
+								ctx.beginPath();
+								ctx.moveTo((nodes_array[row][0]-5), (nodes_array[row][1]+5));
+								ctx.lineTo((nodes_array[col][0]-5), (nodes_array[col][1]+5));
+								ctx.stroke();
+							}
+						}
+					}
+					row++;
+				}
+			}
+			else if ((type==" bin")){
+				//var cols = parseInt(params[2]);
+				//var rows = parseInt(params[3]);
+				var data = output;
+				var cols = 10;
+				var rows = 10;
+				var x1 = 5;
+				var y1 = 5;
+				var width = 25;
+				var height = 25;
+				var x2 = 7;
+				var y2 = 25;
+				var round = 0;
+				timer = setInterval(function(){
+					if (round == 10){
+						clearTimeout(timer);
+					}
+					else{
+						var array = [];
+						for (var i = round*100; i<((round+1)*100); i++){
+							array.push(data[i]);
+						}
+						console.log(array);
+						var x1 = 5;
+						var y1 = 5;
+						var x2 = 7;
+						var y2 = 25;
+						ctx.clearRect(0, 0, 1300, 400);
+						ctx.save();
+						ctx.beginPath();
+						for(item in array){				
+							if (array[item] == 1){
+								ctx.fillStyle = "#ffffff";
+								ctx.fillRect(x1,y1,width,height);
+							}
+							else{
+								ctx.strokeStyle="white";
+								ctx.fillStyle = "black";
+								ctx.rect(x1,y1,width,height);
+							}
+							ctx.stroke();
+							x1 += 35;
+							x2 += 35;
+							if ((item !=0) && (item%cols == (cols-1))){
+								y1 += 30;
+								y2 += 30;
+								x1 = 5;
+								x2 = 7;
+							}
+						}
+					}
+					round++;
+				}, 1000);
+			}
+		}
+		else if(text.includes('parallel.showPath')){
+			history_array.push(text);
+			reload_history();
+			var roads = output[0];
+			$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing path</b>");
+			
+			if (pathArray != []){
+				if (kreslim == false){	
+					console.log(kreslim);
+				}
+				else{
+					for (var j = 0; j < pathArray.length-1; j++){
+						var node1 = pathArray[j];
+						var node2 = pathArray[j+1];
+						var c=document.getElementById("canvas");
+						var ctx=c.getContext("2d");
+							
+						//ctx.clearRect(nodes_array[node1][0]-5, nodes_array[node1][1]+5, nodes_array[node2][0]-5, canvasHeight);
+							
+						ctx.strokeStyle = '#00e6e6';
+						ctx.lineWidth = 2;
+						ctx.beginPath();
+						ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
+						ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
+						ctx.stroke();
+					}
+				}
+			}
+			pathArray = [];
+			text = text.split("parallel.showPath");
+			text = text[1].split("(");
+			text = text[1].split(")");
+			var params = text[0].split(",");
+			var matrix = (params[0]);
+			var index = names.indexOf(matrix);
+			var data = output[index];
+			var V1 = params[1]-1;
+			var V2 = params[2]-1;
+			var count = nodes_array.length;
+			
+			path(data, V1, V2, count);
+			
+			for (var j = 0; j < pathArray.length-1; j++){
+				if (pathArray.length == 2){
+					console.log(V2, V1);
+					if (roads[V2+V1*count] == (count*10)){
+						$('#textResult').append("<span>Cesta, ktorú hľadáš neexistuje.</span>");
+						$('#textResult').append("<br />");
+						kreslim = false;
+					}
+					else{
+						var node1 = pathArray[j];
+						var node2 = pathArray[j+1];
+						var c=document.getElementById("canvas");
+						var ctx=c.getContext("2d");
+						ctx.strokeStyle = 'red';
+						ctx.lineWidth = 1;
+						ctx.beginPath();
+						ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
+						ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
+						ctx.stroke();
+						kreslim = true;
+					}
+				}
+				else{
+					var node1 = pathArray[j];
+					var node2 = pathArray[j+1];
+					var c=document.getElementById("canvas");
+					var ctx=c.getContext("2d");
+					ctx.strokeStyle = 'red';
+					ctx.lineWidth = 1;
+					ctx.beginPath();
+					ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
+					ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
+					ctx.stroke();
+					kreslim = true;
+				}
+			}
+		}
+		else if (text.includes('clear')){
+			history_array.push(text);
+			reload_history();
+			var c=document.getElementById("canvas");
+			var ctx=c.getContext("2d");
+			ctx.clearRect(0, 0, 1300, 400);
+			$('#textResult').empty();
+			$('#textResult').append("<i>Your result:</i>");
+			$('#textResult').append("<br />");
+		}
+		else{
+			history_array.push(text);
+			reload_history();
+			var res = eval(text);
+			$('#textResult').append("<span>"+res+"</span>");
+		}
+		
+	}
+	
+	function reload_history(){
+		$('#history').empty();
+		if (history_array.length > 5){
+			history_array.shift();
+		}
+		for (var item=0; item<history_array.length; item++){
+			$('#history').append(history_array[item]);
+			$('#history').append("<br />");
+		}
+	}
+	
+	var pathArray = [];
+	
+	function path(matrix, V1, V2, nodes){
+		var k = matrix[V2+V1*nodes];
+		pathArray.push(V1);
+		while (k != 0){
+			k = matrix[V2+V1*nodes];
+			if (k != 0){
+				pathArray.push(k-1);
+				V1 = k-1;
+			}
+		} 
+		pathArray.push(V2);
+	}
+	
+	function getHistory(event){
+		var x = event.key;
+		console.log(x);
+		if (x == "ArrowUp") { 
+			countOfUp += 1;
+			var command = history_array[history_array.length-countOfUp];
+			$('#text').val("");
+			$('#text').val(command);
+		}
+		else if (x == "Enter") { 
+			countOfUp = 0;
+			getText();
+		}
+		else if(x == "ArrowDown"){
+			countOfUp -= 1;
+			var command = history_array[history_array.length-countOfUp];
+			$('#text').val("");
+			$('#text').val(command);
+		}
+	}
+	</script>
+	
+</head>
+<body>
+<h1 id="title" style="text-align:center; margin-top:3px;"></h1>
+<div id="textResult" style="margin:8px; width:99%; height:15%; border:1px solid white;">
+<p><i> Your result:</i></p><br />
+</div>
+
+<div id="timePast" style="margin-left: 10px;">
+</div>
+
+<div id="canvasResult" style="margin:8px;">
+	<canvas id="canvas" style="border:1px solid white;">
+	</canvas>
+	<div id="popis" style="border:3px solid white; background-color:white; float:right; color: black;">
+	</div>
+</div>
+
+
+<div id="history" style=" padding:5px; margin:8px; height:110px; border:1px solid white; background-color:yellow; color: black; margin-bottom:0px;">
+</div>
+
+<textarea id="text" onkeydown="getHistory(event)"; style="margin:8px; color:black; border:1px solid green;" placeholder=" Type your command... ">
+</textarea>
+</body>
+</html>

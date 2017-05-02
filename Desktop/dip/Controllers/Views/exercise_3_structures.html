@@ -1,0 +1,490 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	<link href="bootstrap/css/carousel.css" rel="stylesheet">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>	
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>	
+						<li><a href="guide.html"> Guide </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<script>
+
+	var query = window.location.search.substring(1);
+	var vars = query.split("&");
+	var user = vars[0];
+	var project = vars[1];
+				
+	$(function() {
+		$("a").attr('href', function(i, h) {
+			return h +"?"+user;
+		});
+	});
+
+	var CPU_list = [];
+	var GPU_list = [];
+	
+	var CPU_pom = [];
+	var GPU_pom = [];
+	
+	$(document).ready(function(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('start select', function (data) {
+			var CPU_pom = data['data'][0]['CPU_structures'];
+			var GPU_pom = data['data'][0]['GPU_structures'];
+			CPU_pom = CPU_pom.split(",");
+			GPU_pom = GPU_pom.split(",");
+			for (var i=0; i<CPU_pom.length; i++){
+				if (i % 2 == 0){
+					if (CPU_pom[i] == 'attr1'){
+						var arr = $( "#attr1" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = CPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (CPU_pom[i] == 'attr2'){
+						var arr = $( "#attr2" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = CPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (CPU_pom[i] == 'attr3'){
+						var arr = $( "#attr3" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = CPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (CPU_pom[i] == 'attr4'){
+						var arr = $( "#attr4" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = CPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (CPU_pom[i] == 'attr5'){
+						var arr = $( "#attr5" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = CPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (CPU_pom[i] == 'attr6'){
+						var arr = $( "#attr6" ).clone();
+						arr.appendTo( "#CPU_panel" );
+						$(arr).children('input').each(function () {
+							if (this.id == "attr6_input"){
+								this.value = CPU_pom[i+1];
+								$(this).prop('disabled', false);
+							}
+							if (this.id == "userImage"){
+								$(this).show();
+							}
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+				}
+			}
+			for (var i=0; i<GPU_pom.length; i++){
+				if(i%2 == 0){
+					if (GPU_pom[i] == 'attr1'){
+						var arr = $( "#attr1" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = GPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'});
+					}
+					if (GPU_pom[i] == 'attr2'){
+						var arr = $( "#attr2" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = GPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'})
+					}
+					if (GPU_pom[i] == 'attr3'){
+						var arr = $( "#attr3" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = GPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'})
+					}
+					if (GPU_pom[i] == 'attr4'){
+						var arr = $( "#attr4" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = GPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'})
+					}
+					if (GPU_pom[i] == 'attr5'){
+						var arr = $( "#attr5" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							this.value = GPU_pom[i+1];
+							$(this).prop('disabled', false);
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'})
+					}
+					if (GPU_pom[i] == 'attr6'){
+						var arr = $( "#attr6" ).clone();
+						arr.appendTo( "#GPU_panel" );
+						$(arr).children('input').each(function () {
+							if (this.id == "attr6_input"){
+								this.value = GPU_pom[i+1];
+								$(this).prop('disabled', false);
+							}
+							if (this.id == "userImage"){
+								$(this).show();
+							}
+							$(this).show();
+						});
+						arr.draggable({helper: 'clone'})
+					}
+				}
+			}
+		});
+	});
+		
+	$(function(){
+		$('.draggable').draggable({
+			helper:"clone",
+			revert:true
+		});
+	});
+		
+	$(function(){
+		$('.droppable').droppable({
+			drop: function (e, ui) {
+				var elem = $(ui.draggable).clone()
+				elem.appendTo($(this));
+				$(elem).draggable({helper: 'clone'});
+				var id = "#" + ui.draggable[0].id;
+				//console.log(e['target']['id']);
+				//$("#"+ui['draggable'][0]['id']+"_input").prop('disabled', false);
+				//console.log(ui['draggable'][0]['id']);
+				//console.log(ui);
+				$(this).children('div').each(function () {
+					$(this).children('input').each(function () {
+						$(this).prop('disabled', false);
+						if (this.id == "userImage"){
+							$(this).show();
+							$(this).change(readFile);
+						}
+						$(this).show();
+					});
+				});
+			}
+				/*
+				if ($(this).attr('id') == 'CPU_panel'){
+					CPU_list.push(ui.draggable[0].id);
+				}
+				else if ($(this).attr('id') == 'GPU_panel'){
+					GPU_list.push(ui.draggable[0].id);
+				}
+				*/
+		})
+	});
+	
+	$(function(){
+		$('.droppable_kos').droppable({
+			drop: function (e, ui) {
+				console.log(ui.draggable[0].id);
+				ui.draggable.remove()
+			}
+		})
+	});
+	
+
+	function sendData(){
+	
+		$('#CPU_panel').children('div').each(function(){
+			var pom = this.id;
+			$(this).children('input').each(function(){
+				console.log(this.id);
+				if (this.id != "userImage"){
+					CPU_list.push([pom, this.value]);
+				}
+			});
+		});
+		$('#GPU_panel').children('div').each(function(){
+			var pom = this.id;
+			$(this).children('input').each(function(){
+				if (this.id != "userImage"){
+					GPU_list.push([pom, this.value]);
+				}
+			});
+		});
+		/*
+		var elmsC = document.getElementById("CPU_panel").getElementsByTagName("div");
+		CPU_list = [];
+		for (var i = 0; i < elmsC.length; i++) {
+			CPU_list.push(elmsC[i].id);
+		}
+		
+		var elmsG = document.getElementById("GPU_panel").getElementsByTagName("img");
+		GPU_list = [];
+		for (var i = 0; i < elmsG.length; i++) {
+			GPU_list.push(elmsG[i].id);
+		}
+		*/
+		
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('start select', function (data) {
+		var project = data['id'];
+		socket.emit('send selected', { cpu: CPU_list, gpu: GPU_list, id: project, user:user });
+			socket.on('updateResult', function (reload) {
+				if (reload['reload']){
+					//window.location.href = './exercise_5_functions.html?'+user+'&'+project;
+				}
+			});
+		});
+	}
+	
+	function get_name(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_2_name.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_create(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_4_data.html?'+user+'&'+project_id;
+		});
+	}
+	
+	function get_functions(){
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('send id to url', function (data) {
+		var project_id = data['id'];
+		window.location.href = './exercise_5_functions.html?'+user+'&'+project_id;
+		});
+	}
+	
+	$(document).ready(function(){
+		//document.getElementById("userImage_1").addEventListener("change", readFile);
+	});
+	
+	function readFile(){
+		var siblings = ($(this).siblings());
+		if (this.files && this.files[0]) { 
+			var FR= new FileReader(); 			
+			FR.addEventListener("load", function(e) {
+				//document.getElementById("img_1").src       = e.target.result;
+				document.getElementById("b64_1").innerHTML = e.target.result;
+				result_src = e.target.result;
+			});    
+			FR.readAsDataURL( this.files[0] );
+		}
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('skusam image', function (data) {
+			var img = $('#b64_1')[0].innerHTML;
+			if (siblings[1] != undefined){
+				if (siblings[1].value == ""){
+					window.alert("Nezadal si nazov");
+				}
+				else{
+					var nazov = siblings[1].value;
+					socket.emit('posielam image', {img:img, nazov:nazov, user:user, project:project});
+					socket.on('image back', function(img){
+					
+						var img_show = $('<img id="dynamic">');
+						img_show.attr('src', img['file']);
+						img_show.attr('height', 150);
+						img_show.attr('width', 150);
+						img_show.appendTo('#images');
+					
+						//var base64 = img['file'];
+						//document.getElementById("img_1").src = base64;
+					})
+				}
+			}
+		})
+		//encodeB(this.files[0]['name'].toString());
+	}
+
+	
+</script>
+
+<div id="nav" class="row">
+    <div id="box1" class="col-md-4" onclick="sendData();get_name();"> <b>Change name</b> </div>
+	<!--<div id="box2" class="col-md-4" onclick="sendData();get_create();"> <b>Create data</b> </div>-->
+	<div id="box3" class="col-md-4" onclick="sendData();get_functions();"> <b>Functions</b> </div>
+</div>
+
+<div class="container">	
+		<fieldset>
+		<form>
+		<div class="row">
+		<h3>Select structures</h3>
+		<br />
+		
+			<div id="uploadImage" style="display:none;">
+				<b><i>Vyber obrázky: </i></b><br /><br />
+				<p><label for="exampleInputEmail1">Názov</label>
+				<input type="text" class="form-control" id="nazovObr" name="nazovObr" placeholder="Nazov"></p>
+				<input type="file" name="userImage" id="userImage" onChange="sendImage();" />
+				<p id="b64" style="display:none;"></p>
+				<img id="img" height="150">
+			</div>
+		
+			<div class="col-xs-2">
+				<div id="CPU_panel" class="droppable" name="CPU_panel">	
+					<h3><b>CPU panel</b></h3>
+					<hr />
+					<br />
+					<br />
+				</div>
+			</div>
+			
+			<div class="col-xs-2">
+			</div>
+			
+			<div class="col-xs-2">
+				<div id="GPU_panel" class="droppable" name="GPU_panel">	
+					<h3><b>GPU panel</b></h3>
+					<hr />
+					<br />
+					<br />			
+				</div>
+			</div>
+			
+			<div class="col-xs-offset-2">
+				<div id="panel" class="droppable_kos">
+					<br />
+					<!--
+					<img name="obr1" src="obr1.png" id="attr1" class="draggable">
+					<img name="obr2" src="obr2.png" id="attr2" class="draggable">
+					<img name="obr3" src="obr3.png" id="attr3" class="draggable">
+					<img name="obr4" src="obr4.png" id="attr4" class="draggable">
+					<img name="obr5" src="obr5.png" id="attr5" class="draggable">
+					<img name="obr6" src="obr6.png" id="attr6" class="draggable">
+					-->
+					<div id="attr1" class="draggable testik"><b><i>1D array</i></b><input type="text" class="form-control" id="attr1_input" name="attr1_input" placeholder="1D-ARRAY" disabled style="display:none;"></div><br />
+					<div id="attr2" class="draggable testik"><b><i>2D array</i></b><input type="text" class="form-control" id="attr2_input" name="attr2_input" placeholder="2D-ARRAY" disabled style="display:none;"></div><br />
+					<div id="attr3" class="draggable testik"><b><i>Graph</i></b><input type="text" class="form-control" id="attr3_input" name="attr3_input" placeholder="GRAPH" disabled style="display:none;"></div><br />
+					<div id="attr4" class="draggable testik"><b><i>List</i></b><input type="text" class="form-control" id="attr4_input" name="attr4_input" placeholder="LIST" disabled style="display:none;"></div><br />
+					<div id="attr5" class="draggable testik"><b><i>Set</i></b><input type="text" class="form-control" id="attr5_input" name="attr5_input" placeholder="SET" disabled style="display:none;"></div><br />
+					<div id="attr6" class="draggable testik2"><b><i>2D image</i></b><input type="text" class="form-control" id="attr6_input" name="attr6_input" placeholder="Image name" disabled style="display:none;"><input type="file" name="userImage" id="userImage" style="display:none;" onChange="readFile();" />
+						<p id="b64" style="display:none;"></p>
+						<img id="img" height="150"></div><br />					
+					<br />
+				</div>
+			</div>	
+			
+			
+		</div>
+		
+		<hr />
+		
+		<div id="images">
+			<p id="b64_1" style="display:none;"></p>
+			<img id="img_1" height="150">
+		</div>
+					
+		
+			<!--<input type="submit" value="Create" class="btn btn-default btn-md" onClick="return sendData();"></input>-->
+			<!--<button type="button" name="next" id="next" class="btn btn-default btn-md" onclick="sendData();">Next</button>-->
+			<!--<button type="button" name="next" id="next" class="btn btn-default btn-md"><a href="exercise_create.html" onclick="location.href=this.href+'?CPU='+CPU_list&GPU='+GPU_list&return false;">Next</a></button>-->
+		</form>
+		</fieldset>
+		
+		<br />
+	
+</div>
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

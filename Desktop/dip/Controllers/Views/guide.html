@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>		
+
+		<script>
+			$(document).ready(function(){
+				var query = window.location.search.substring(1);
+				var user = query;
+				console.log(query);
+				
+				$(function() {
+					$("a").attr('href', function(i, h) {
+						return h +"?"+user;
+					});
+				});
+			})
+		</script>
+	
+</head>
+
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>	
+						<li><a href="guide.html"> Guide </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+	<div class="container">
+		<br />
+		Úplnú špecifikáciu nájdete <a href="praca.pdf">tu</a>.
+		<br/>
+		<br />
+		<h1>Login</h1>
+		<p>
+			Login a Registráacia je postavená na jednoduchom princípe, vyžaduje len zadať základné údaje ako <br />
+			Meno, Priezvisko, Heslo a email, pomocou, ktorého sa budete prihlsaovať.
+		</p>
+		<br />
+		
+		<h1>Úvodná obrazovka</h1>
+		<p>
+			Úvodná obrazovka po prihlásení ponúka tri základné sekcie<br />
+			1, Lectures - so zoznamom funkčných existujúcich príkladov<br />
+			2, Projects - obsahuje zoznam vlastných a zdieľaných projektov<br />
+			3, Guide - pomocník, v ktorom sa práve nachádzate<br />
+		</p>
+		<br />
+		
+		<h1>Lectures</h1>
+		<p>
+			Obsahuje 4 predpripravené príklady, ktoré sú podrobne vysvetlené,<br />
+			obshaujú popis algoritmu, obrázkové vysvetlenia a zdrojové kódy, <br />
+			po rozkliknutí tlačidla "Show sources".<br />
+			Následne je možné program spustiť RUN alebo skopírovať do svojho adresára COPY<br />
+		</p>
+		
+		<h1>Projects</h1>
+		<p>
+			V zozname projektov je možné projekty editovať, mazať, zdieľať, spustiť.<br />
+			V editačnom okne je možné meniť názov a popis projektu; dátové štruktúry; funkcie. <br />
+			Jednotlivé štruktúry sa pridávajú ťahaním. V prípade, že je potrebné štruktúru odobrať stačí<br />
+			ju vrátiť säť do panela so zoznamom. <br />			
+		</p>
+		
+		<h1>Zoznam funkcií jazyka</h1>
+		<p>
+		<i>Definovanie dátových štruktúr:</i><br />
+		<br />
+		<b>randomFill / zeroFill</b> – tieto dve metódy budú slúžiť na vytváranie jednorozmerných polí, ako hovoria samostatné názvy, tak funkcie pole vytvoria a následne ho naplnia dátami, buď náhodnými – randomFill, alebo bude celé pole pozostávať z núl – zeroFill. Ako parameter tieto funkcie dostanú dĺžku poľa.<br />
+		<br /><b>randomBinFill</b> – funkcia, ktorá naplní jednorozmerné pole binárnymi hodnotami, čiže náhodne rozhodí v poli hodnoty 1 a 0, rovnako je parametrom funkcie veľkosť poľa. <br />
+		<br /><b>createRandomMatrix / createZeroMatrix</b> – táto dvojica funkcií bude fungovať takmer rovnako ako randomFill a zeroFill, až na to, že pôjde o vytváranie dvojrozmerných polí, respektíve matíc. S takouto dátovou štruktúrou sa potom pracuje ako s maticou. Parametre funkcií tvoria rozmery, teda počet stĺpcov a riadkov.<br />
+		<br /><b>randomGraph / zeroGraph</b> – keďže aplikácia ponúka aj programovanie grafových úloh, pridám aj funkcie na vytváranie grafov. Tieto funkcie budú grafy vytvárať nasledovným spôsobom, zeroGraph, vytvorí graf s vrcholmi ale bez hrán, jej jediným parametrom je počet vrcholov; randomGraph zasa vytvára náhodný graf spolu s hranami, ako parametre táto funkcia potrebuje počet vrcholov a počet hrán, tie sa potom prevedú do maticového systému ako dvojrozmerné pole.<br />
+		<br />
+		<br />
+		<i>Riadiace procesy:</i><br />
+		<b>readCore</b> – táto funkcia, bude mať na starosti načítanie kódu, ktorý pobeží na GPU, z programu, ktorý sa v OpenCL nazýva kernel. Metóda načíta do svojej pamäte tento kód pre GPU a následne sa na pozadí kód preloží do úplnej podoby OpenCL kernelu. Algoritmus, ktorý bude bežať na GPU, upravím pre študenta tak, aby bol jednoduchší na pochopenie, keďže kernel v OpenCL obsahuje viacero znakov, ktoré môžu byť pre študenta, ktorý neprogramoval v niektorom C jazyku, dosť nepochopiteľné. Metódu readCore študent sám nemusí volať, pretože sa sama inicializuje pri spustení programu, nakoľko sa vždy vykonáva to isté a študent tým nepotrebuje byť zaťažovaný.<br /> 
+		<br /><b>buildProgram</b> – táto funkcia sa vykoná až potom, čo prebehne predošlá funkcia readCore. Po preložení a načítaní kódu v readCore, funkcia pripraví program, ktorý pobeží na GPU, pre build a zároveň v ňom skontroluje syntaktické chyby pred spustením programu. <br />
+		<br /><b>createBuffer</b> – keďže jednou zo základných úloh samotného programu je príprava dát pre GPU, aj tento akt potrebuje svoju metódu. V tejto funkcii ide o prekopírovanie dát z CPU na GPU, takže úlohou tejto funkcie je vytvorenie buffrov pre GPU, ktorých obsah je zložený z obsahu CPU parametrov. Užívateľ ju ale opäť nezadáva o to sa stará nasledujúca funkcia.<br />
+		<br /><b>copy</b> – ak študent zavolá túto metódu, tak na pozadí sa vykoná predošlá funkcia createBuffer, iba v takom prípade, že buffer pre GPU ešte nebol vytvorený. Študent pošle vo volaní funkcie parameter, ktorým je CPU štruktúra, ktorá sa má prekopírovať na GPU. Následne sa vykoná funkcia createBuffer, ktorá mu pošle späť vytvorený buffer, ak už nebol vytvorený predtým. To sa môže stať v prípade, že chcem daný program spustiť viackrát a hodnotu v buffri mu budem chcieť iba modifikovať. V prípade, že buffer už existuje tak funkcia copy iba vloží/skopíruje nový obsah do buffra z CPU premennej.<br />
+		<br /><b>read </b>– opakom funkcie copy je práve táto metóda. Jej úlohou je výsledné dáta, ktoré sa spracujú na GPU, prečítať do CPU premennej naspäť, aby s ňou mohol potom študent ďalej pracovať na CPU, ak ju chce vypísať a podobne. Táto funkcia sa volá až po skončení behu programu na GPU. Ako parametrom sú potom GPU buffer, z ktorého sa bude čítať a CPU premenná, do ktorej sa má výsledok zapísať. <br />
+		<br /><b>parameter</b> – keďže funkcia, ktorá pobeží na GPU potrebuje vstupné parametre,  konkrétne ide o GPU buffre, s ktorými potom pracuje, je potrebné ich pre funkciu na GPU inicializovať. K tomu sa použije funkcia parameter. Parametrami tejto metódy sú potom číslo, teda poradie v akom sa majú do funkcie core zapísať, čísluje sa od 0. Druhým parametrom tejto metódy je samotný buffer – premenná GPU. <br />
+		<br /><b>run</b> – touto funkciou užívateľ spustí celý program. Samotné paralelné programovanie pozostáva v rozdeľovaní úloh medzi procesormi. V tomto prípade treba definovať, koľko procesorov potrebujem k danému programu. Ako parametre tak funkcia dostane počet procesorov a počet jednotlivých worker-ov v rámci procesora, ktorí si prácu medzi sebou rozdelia na GPU.<br />
+		<br />
+		<br />
+		<i>Príkazy pre programovanie na GPU:</i><br />
+		<br /><b>getWorkerNumber</b> – príkaz vráti id worker-a patriaceho aktuálnemu procesoru.<br />
+		<br /><b>getWorkersCount</b> – vráti počet všetkých worker-ov v aktuálnom procesore.<br />
+		<br /><b>barrier</b> – bude slúžiť na zastavenie procesorov, v prípade, že niektorý z ostatných ešte nedobehol a je potrebné, aby sa všetky procesory počkali.<br />
+		<br />
+		<br />
+		<i>Spracovanie výsledkov na CPU:</i><br />
+		<br /><b>printResult</b> – funkcia vypíše výsledok spracovania programu, po získaní dát z funkcie read. Parametrom bude premenná z CPU.<br />
+		<br /><b>draw</b> – funkcia vykreslí výsledok programu do predpripraveného Canvasu. Kresliť bude v podobe polí, jednorozmerných alebo dvojrozmerných a grafov. Typ vykreslenia študent zadá ako druhý parameter v podobe: 1D, 2D alebo matrix a graph. Prvým parametrom bude premenná, CPU, ktorú bude chcieť študent vykresliť. V rámci vykresľovania 2D poľa respektíve matice, funkcia draw akceptuje ešte parametre ako počet riadkov a stĺpcov. Súčasťou grafových úloh môže byť aj vykresľovanie ciest medzi vrcholmi.<br />
+		<br /><br />
+		Modul sa sám automaticky vždy pred spustením programu načíta, čiže nebude potrebné, aby študent vpisoval príkaz na prístup k modulu. Modul dostane názov parallel, takže jediné, čo bude musieť študent robiť, aby sa dostal k jeho metódam, je pred každú metódu napísať príkaz parallel.nazovMetody. Je to rovnaký spôsob, ako funguje pre všetky ostatné moduly JavaScript-u.<br />
+		<br />
+
+		</p>
+	
+	</div>
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

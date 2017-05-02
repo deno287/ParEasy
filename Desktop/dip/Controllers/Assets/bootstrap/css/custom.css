@@ -1,0 +1,377 @@
+blockquote{padding:1px 10px; margin:1px 0 5px; font-size:1.5px;}
+
+.featurette-divider {
+  margin: 5px 0; /* Space out the Bootstrap <hr> more */
+}
+
+.welcome_text{
+	text-align: center;
+}
+
+.news_boxes{
+	width:85%; 
+	border-radius:4px; 
+	background:#CCFFFF; 
+	margin: 1px; 
+	padding:5px;
+}
+
+.buch{
+	width: 50px;
+	height: 4px;
+}
+
+.navbar-inverse{
+	background-color: #003333;
+	border-color: #003333;
+}
+
+.panel-default>.panel-heading {
+	background-color: #e6ffff;
+}
+
+#editor {
+	height:500px;
+    max-height: 100%;
+	z-index:10;
+	padding: 5px;
+	margin: 5px;
+}
+#editor2 {
+    height: 500px;
+	z-index:10;
+	margin: 5px;
+}
+#editor3 {
+    height: 500px;
+	z-index:10;
+	margin: 5px;
+}
+#editor4 {
+    height: 500px;
+	z-index:10;
+	margin: 5px;
+}
+#editor5 {
+    height: 500px;
+	z-index:10;
+	margin: 5px;
+}
+#editor6 {
+    height: 500px;
+	z-index:10;
+	margin: 5px;
+}
+
+.testik{
+	border: 2px solid;
+	border-radius:4px;
+	margin: 3px;
+	padding-top: 24px;
+	padding-right: 10px;
+	padding-left:10px;
+	height: 90px;
+	width:285px;
+	background-color:white;
+}
+.testik2{
+	border: 2px solid;
+	border-radius:4px;
+	margin: 3px;
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left:10px;
+	height: 110px;
+	width:285px;
+	background-color:white;	
+}
+
+#CPU_panel {
+	width: 350px;
+	height: auto;
+	border: 2px dotted;
+	text-align: center;
+	background-color: #e6e6ff;
+	padding: 28px;
+}
+
+#GPU_panel {
+	width: 350px;
+	height: auto;
+	border: 2px dotted;
+	text-align: center;
+	background-color: #e6e6ff;
+	padding:28px;
+}
+
+#stack {
+	width: 300px;
+	height: auto;
+	border: 2px dotted;
+	text-align: center;
+}
+
+#stack h3, #CPU_panel h3, #GPU_panel h3 {
+	text-align: center;
+	color: black;
+}
+
+#stack hr, #CPU_panel hr, #GPU_panel hr {
+	width: 90%;
+}
+
+#u1, #u2, #u3 {
+	width: 120px;
+	height: 120px;
+	border: 1px solid;
+	float: left;
+    margin: 10px;
+    padding: 10px;
+}
+
+#register_panel {
+	display: none;
+}
+
+#example1 h2, #example2 h2, #example3 h2, #example4 h2 {
+	font-size: 250%;
+	font-style: oblique;
+}
+
+#example1, #example2, #example3, #example4 {
+	width: max-width;
+	height: 150px;
+	margin: 10px;
+	cursor: pointer;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+#example1 {
+	background-color: #fff2e6;
+}
+
+#example2 {
+	background-color: #E6E6FA;
+}
+
+#example3 {
+	background-color: #AFEEEE;
+}
+
+#example4 {
+	background-color: #FF9999;
+}
+
+#panel
+{
+    width:350px;
+    height:auto;
+    border:1px solid black;
+    margin:10px;
+    float:right;
+	padding: 28px;
+	text-align: center;
+	background-color: #ff9999;
+}
+
+div .box {
+	border: 1px solid white;
+	margin: 2px;
+	vertical-align: middle; 
+	text-align: center;
+	width:100px;
+	display:inline-table;
+}
+
+div .box_evol_0 {
+	border: 1px solid white;
+	margin: 2px;
+	width: 50px;
+	display:inline-table;
+	height: 50px;
+	padding-top: 50px;
+}
+
+div .box_evol_1 {
+	border: 1px solid white;
+	background-color:white;
+	margin: 2px;
+	width:50px;
+	display:inline-table;
+	height: 50px;
+	padding-top: 50px;
+}
+
+#showArray {
+	border: 1px solid;
+	margin: 2px;
+	padding: 1px;
+	width: 720px;
+}
+
+section {
+  float: right;
+  margin: 0 1.0%;
+  width: 73%;
+}
+
+#nav {
+	margin:auto;
+	width:50%;
+	padding:10px;
+}
+
+#box1, #box2, #box3{
+	text-align: center;
+	cursor: pointer;
+	color: white;
+	line-height:1.3333333;
+	padding: 10px 16px;
+	font-size:18px;
+	border-radius: 6px;
+	border-color:#337ab7;
+	font-weight:400;
+	margin-bottom:0;
+	white-space:nowrap;
+	vertical-align:middle;
+	border:1px solid;
+	background-color: #9999ff;
+}
+#box3 {
+	color:black;
+	background-color: white;
+}
+
+#save_functions {
+	float: left;
+	margin-left: 10%;
+}
+
+.col1 {
+	width: 50%;
+}
+
+.col2{
+	width:50%;
+	float:right;
+}
+
+#newProject :hover{
+	text-decoration:none;
+}
+
+#run_button {
+	margin-left:10px;
+}
+
+#uploadImage {
+	margin-left:50px;
+}
+#nazovObr {
+	width: 300px;
+}
+#images {
+	margin: 20px;
+}
+
+.bs-callout {
+	padding: 10px;
+	margin: 30px 100px;
+	border: 1px solid #eee;
+	border-left-width: 5px;
+	border-radius: 3px;
+	width:80%;
+}
+
+.bs-callout :hover {
+	
+}
+
+#welcomen{
+	float:right;
+	width:400px;
+}
+
+aside {
+  float: left;
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 15%;
+  border: 1px solid #ccc!important;
+  border-radius: 16px!important;
+}
+
+@media screen and (min-width: 1400px) {
+	#run_button{
+		margin-left:21%;
+	}
+	aside{
+		height: 16%;
+	}
+	#editor{
+		width: 1024px;
+	}
+	#editor2{
+		width: 1024px;
+	}
+	#editor3{
+		width: 1024px;
+	}
+	#editor4{
+		width: 1024px;
+	}
+	#editor5{
+		width: 1024px;
+	}
+	#editor6{
+		width: 1024px;
+	}
+	#menuButtons{
+		margin-left:12%;
+	}
+	#Content_1{
+		margin-left:18%;
+	}
+	#Content_2{
+		margin-left:18%;
+	}
+	#lectureButtons{
+		margin-left:21%;
+	}
+}
+
+@media screen and (max-width: 1399px) {
+	#run_button{
+		margin-left:9%;
+	}
+	aside{
+		height: 22%;
+	}
+	#editor{
+		width: 760px;
+	}
+	#editor2{
+		width: 760px;
+	}
+	#editor3{
+		width: 760px;
+	}
+	#editor4{
+		width: 760px;
+	}
+	#editor5{
+		width: 760px;
+	}
+	#editor6{
+		width: 760px;
+	}
+	#Content_1{
+		margin-left:7%;
+	}
+	#Content_2{
+		margin-left:7%;
+	}
+	#lectureButtons{
+		margin-left:9%;
+	}
+}

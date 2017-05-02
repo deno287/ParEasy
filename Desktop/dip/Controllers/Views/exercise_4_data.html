@@ -1,0 +1,507 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>	
+	<script src="./js/scripts.js"></script>		
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>	
+						<li><a href="guide.html"> Guide </a></li>							
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+<!--  		############################   CONTENT   ############################  		-->
+<script>
+
+var query = window.location.search.substring(1);
+var vars = query.split("&");
+var user = vars[0];
+var project_id = vars[1];
+				
+$(function() {
+	$("a").attr('href', function(i, h) {
+		return h +"?"+user;
+	});
+});
+
+var pom1D = 0;
+var pom2D = 0;
+var pomG = 0;
+var pomL = 0;
+var pomS = 0;
+var pomI = 0;
+var list_of_structures = [];
+var list_of_GPU = [];
+
+$( document ).ready(function() {
+
+	 var CPU = [],
+		 GPU = [],
+         tmp = [];
+
+	var socket = io.connect();
+	socket.on('start create', function (data) {
+		var project = data['id'];
+		socket.emit('get data', { id: project});
+		socket.on('get structures', function (data) {
+			CPU = data['CPU'];
+			GPU = data['GPU'];
+			
+			CPU = CPU.split(",");
+			GPU = GPU.split(",");
+			var pocA1 = 0;
+			var pocA2 = 0;
+			var pocG = 0;
+			var pocS = 0;
+			var pocL = 0;
+			var pocGA1 = 0;
+			var pocGA2 = 0;
+			var pocGG = 0;
+			var pocGS = 0;
+			var pocGL = 0;
+			for ($i=0; $i<CPU.length; $i++){
+				if (CPU[$i] == 'attr1'){
+					document.getElementById('1darray').style.display = "block";
+					pocA1++;
+					if (pocA1 != 1){
+						list_of_structures.push("array1_"+pocA1);
+					}
+					else{
+						list_of_structures.push("array1");
+					}
+				}
+				else if (CPU[$i] == 'attr2'){
+					document.getElementById('2darray').style.display = "block";
+					pocA2++;
+					if (pocA2 != 1){
+						list_of_structures.push("array2_"+pocA2);
+					}
+					else{
+						list_of_structures.push("array2");
+					}
+				}
+				else if (CPU[$i] == 'attr3'){
+					document.getElementById('graph').style.display = "block";
+					pocG++;
+					if (pocG != 1){
+						list_of_structures.push("graph_"+pocG);
+					}
+					else{
+						list_of_structures.push("graph");
+					}
+				}
+				else if (CPU[$i] == 'attr4'){
+					document.getElementById('list').style.display = "block";
+					pocL++;
+					if (pocL != 1){
+						list_of_structures.push("list_"+pocL);
+					}
+					else{
+						list_of_structures.push("list");
+					}
+				}
+				else if (CPU[$i] == 'attr5'){
+					document.getElementById('set').style.display = "block";
+					pocS++;
+					if (pocS != 1){
+						list_of_structures.push("set_"+pocS);
+					}
+					else{
+						list_of_structures.push("set");
+					}
+				}
+				else if (CPU[$i] == 'attr6'){
+					document.getElementById('image').style.display = "block";
+					list_of_structures.push("image");
+				}
+			}
+			for ($i=0; $i<GPU.length; $i++){
+				if (GPU[$i] == 'attr1'){
+					document.getElementById('1darrayG').style.display = "block";
+					pocGA1++;
+					if (pocGA1 != 1){
+						list_of_GPU.push("array1DG_"+pocGA1);
+					}
+					else{
+						list_of_GPU.push("array1DG");
+					}
+				}
+				else if (GPU[$i] == 'attr2'){
+					document.getElementById('2darrayG').style.display = "block";
+					pocGA2++;
+					if (pocGA2 != 1){
+						list_of_GPU.push("array2G_"+pocGA2);
+					}
+					else{
+						list_of_GPU.push("array2G");
+					}
+				}
+				else if (GPU[$i] == 'attr3'){
+					document.getElementById('graphG').style.display = "block";
+					pocGG++;
+					if (pocGG != 1){
+						list_of_GPU.push("graphG"+pocGG);
+					}
+					else{
+						list_of_GPU.push("graphG");
+					}
+				}
+				else if (GPU[$i] == 'attr4'){
+					document.getElementById('listG').style.display = "block";
+					pocGL++;
+					if (pocGL != 1){
+						list_of_GPU.push("listG"+pocGL);
+					}
+					else{
+						list_of_GPU.push("listG");
+					}
+				}
+				else if (GPU[$i] == 'attr5'){
+					document.getElementById('setG').style.display = "block";
+					pocGS++;
+					if (pocGS != 1){
+						list_of_GPU.push("setG"+pocGS);
+					}
+					else{
+						list_of_GPU.push("setG");
+					}
+				}
+				else if (GPU[$i] == 'attr6'){
+					document.getElementById('imageG').style.display = "block";
+					list_of_GPU.push("imageG");
+				}
+			}			
+		});
+	});
+	
+});
+	
+function SendData(){
+	var socket = io.connect();
+	socket.on('a', function (data) {
+		socket.emit('b', { 	array1:array1D, array1_2:array1D_2, array1_3:array1D_3,
+							array2:array2, array2_2:array2_2, array2_3:array2_3, 
+							graph:graph, graph2:graph2, graph3:graph3,
+							list:list, list2:list2, list3:list3,
+							set:set, set2:set2, set3:set3, 
+							image:image, 
+							array1DG:array1DG,  array1DG_2:array1DG_2, array1DG_3:array1DG_3, 
+ 							array2G:array2G, array2G_2:array2G_2, array2G_3:array2G_3, 
+							listG:listG, listG2:listG2, listG3:listG3, 
+							setG:setG, setG2:setG2, setG3:setG3, 
+							graphG:graphG, graphG2:graphG2, graphG3:graphG3, 
+							imageG:imageG, 
+							CPU:list_of_structures, 
+							GPU:list_of_GPU});
+		window.open('/exercise_5_functions.html?'+user+'&'+project_id);
+	});	
+}
+	
+function get_name(){
+	var socket = io.connect();
+	socket.on('send id to url', function (data) {
+	var project_id = data['id'];
+	window.location.href = '/exercise_2_name.html?'+user+'&'+project_id;
+	});
+}
+	
+function get_select(){
+	var socket = io.connect();
+	socket.on('send id to url', function (data) {
+	var project_id = data['id'];
+	window.location.href = '/exercise_3_structures.html?'+user+'&'+project_id;
+	});
+}
+	
+function get_functions(){
+	var socket = io.connect();
+	socket.on('send id to url', function (data) {
+	var project_id = data['id'];
+	window.location.href = '/exercise_5_functions.html?'+user+'&'+project_id;
+	});
+}
+
+</script>
+
+<div id="nav" class="row">
+    <div id="box1" class="col-md-4" onclick="SendData();get_name();"> <b>Change name</b> </div>
+	<div id="box2" class="col-md-4" onclick="SendData();get_select();"> <b>Select structures</b> </div>
+	<div id="box3" class="col-md-4" onclick="SendData();"> <b>Functions</b> </div>
+</div>
+
+<div class="container">
+	<link href="bootstrap/css/carousel.css" rel="stylesheet">
+	<link href="bootstrap/css/custom.css" rel="stylesheet">
+	
+		<div class="col-md-6">
+			<h2>CPU</h2>
+			<br />
+			
+			<div id="1darray" style="display:none;">
+				<h3>1D Array</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile" multiple size="50" onchange="readFile()">				
+				<p id="demo"></p>
+				<div id="generate1DArray">
+					<form id="form1Darray">	
+							Input count: <input type="text" id="range1" name="range1_1"></input><br />		
+							Input min: <input type="text" id="range2" name="range1_2"></input><br />
+							Input max: <input type="text" id="range3" name="range1_3"></input><br />
+							<input type="button" id="generate1" value="Generate" onClick="generate1DArray();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="show1DArray">		
+				</div>				
+			</div>
+			
+			<div id="2darray" style="display:none;">
+				<h3>2D Array</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile2" multiple size="50" onchange="readFile2()">				
+				<p id="demo2"></p>
+				<div id="generate2DArray">
+					<form id="form2Darray">	
+							Input count y: <input type="text" id="range2_1" name="range2_1"></input><br />	
+							Input count x: <input type="text" id="range2_2" name="range2_2"></input><br />									
+							Input min: <input type="text" id="range2_3" name="range2_3"></input><br />
+							Input max: <input type="text" id="range2_4" name="range2_4"></input><br />
+							<input type="button" id="generate2" value="Generate" onClick="generate2DArray();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="show2DArray">		
+				</div>				
+			</div>
+			
+			<br />
+						
+			<div id="graph" style="display:none;">
+				<h3>Graph</h3>	
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile3" multiple size="50" onchange="readFile3()">				
+				<p id="demo3"></p>
+				<div id="generateGraph">
+					<form id="formGraph">	
+							Input count: <input type="text" id="range3_1" name="range3_1"></input><br />
+							<input type="button" id="generate3" value="Generate" onClick="generateGraph();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showGraph">		
+				</div>				
+			</div>
+			
+			<br />
+						
+			<div id="list" style="display:none;">
+				<h3>List</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile4" multiple size="50" onchange="readFile4()">				
+				<p id="demo4"></p>
+				<div id="generateList">
+					<form id="formList">	
+							Input count: <input type="text" id="range4_1" name="range4_1"></input><br />
+							<input type="button" id="generate4" value="Generate" onClick="generateList();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showList">		
+				</div>				
+			</div>
+			
+			<br />
+						
+			<div id="set" style="display:none;">
+				<h3>Set</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile5" multiple size="50" onchange="readFile5()">				
+				<p id="demo5"></p>
+				<div id="generateSet">
+					<form id="formSet">	
+							Input count: <input type="text" id="range5_1" name="range5_1"></input><br />
+							<input type="button" id="generate5" value="Generate" onClick="generateSet();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showSet">		
+				</div>					
+			</div>
+			
+			<br />
+			
+			<div id="image" style="display:none;">
+				<h3>2D Image</h3>
+				<label for="image"><br />Import image</label>
+				<input id="image" name="image" type="file"></input>				
+				<p id="demo6"></p>
+				<div id="showImage">		
+				</div>					
+			</div>			
+		</div>
+		
+		<div class="col-md-6">
+			<h2>GPU</h2>
+			<br />
+			
+			<div id="1darrayG" style="display:none;">
+				<h3>1D Array</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFileG" multiple size="50" onchange="readFileG()">				
+				<p id="demoG"></p>
+				<div id="generate1DArrayG">
+					<form id="form1DarrayG">	
+							Input count: <input type="text" id="range1G" name="range1_1G"></input><br />		
+							Input min: <input type="text" id="range2G" name="range1_2G"></input><br />
+							Input max: <input type="text" id="range3G" name="range1_3G"></input><br />
+							<input type="button" id="generate1G" value="Generate" onClick="generate1DArrayG();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="show1DArrayG">		
+				</div>				
+			</div>
+			
+			<div id="2darrayG" style="display:none;">
+				<h3>2D Array</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile2G" multiple size="50" onchange="readFile2G()">				
+				<p id="demo2G"></p>
+				<div id="generate2DArrayG">
+					<form id="form2DarrayG">	
+							Input count y: <input type="text" id="range2_1G" name="range2_1G"></input><br />	
+							Input count x: <input type="text" id="range2_2G" name="range2_2G"></input><br />									
+							Input min: <input type="text" id="range2_3G" name="range2_3G"></input><br />
+							Input max: <input type="text" id="range2_4G" name="range2_4G"></input><br />
+							<input type="button" id="generate2G" value="Generate" onClick="generate2DArrayG();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="show2DArrayG">		
+				</div>				
+			</div>
+						
+			<div id="graphG" style="display:none;">
+				<h3>Graph</h3>	
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile3G" multiple size="50" onchange="readFile3G()">				
+				<p id="demo3G"></p>
+				<div id="generateGraph">
+					<form id="formGraphG">	
+							Input count: <input type="text" id="range3_1G" name="range3_1G"></input><br />
+							<input type="button" id="generate3G" value="Generate" onClick="generateGraphG();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showGraphG">		
+				</div>				
+			</div>
+						
+			<div id="listG" style="display:none;">
+				<h3>List</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile4G" multiple size="50" onchange="readFile4G()">				
+				<p id="demo4G"></p>
+				<div id="generateListG">
+					<form id="formListG">	
+							Input count: <input type="text" id="range4_1G" name="range4_1G"></input><br />
+							<input type="button" id="generate4G" value="Generate" onClick="generateListG();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showListG">		
+				</div>				
+			</div>
+						
+			<div id="setG" style="display:none;">
+				<h3>Set</h3>
+				<label for="file"><br />Import file</label>
+				<input type="file" id="myFile5G" multiple size="50" onchange="readFile5G()">				
+				<p id="demo5"></p>
+				<div id="generateSetG">
+					<form id="formSetG">	
+							Input count: <input type="text" id="range5_1G" name="range5_1G"></input><br />
+							<input type="button" id="generate5G" value="Generate" onClick="generateSetG();"></button>							
+						<br />											
+					</form>		
+				</div>
+				<div id="showSetG">		
+				</div>					
+			</div>
+			
+			<br />
+			
+			<div id="imageG" style="display:none;">
+				<h3>2D Image</h3>
+				<label for="imageG"><br />Import image</label>
+				<input id="imageG" name="imageG" type="file"></input>				
+				<p id="demo6G"></p>
+				<div id="showImageG">		
+				</div>					
+			</div>			
+		</div>
+	
+</div>
+
+<!--  		############################   FOOTER   ############################  		-->
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

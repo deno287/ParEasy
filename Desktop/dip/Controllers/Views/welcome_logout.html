@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>		
+</head>
+
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome_logout.html"> Home </a></li>	
+						<li><a href="guide.html"> Guide </a></li>						
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="guide.html" >Guide</a></li>
+						<li><a href="login.html">Login</a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+	<script>
+	$(function()
+	{
+		var colors = [ '#F70073', '#F700F7', '#F7A500', '#F7F700', '#00D6F7', '#00E700', '#B500F7' ];
+		
+		$('h1').delegate('span', 'mouseenter mouseleave', function(e)
+		{
+			var span = $(this),
+				newColor = colors[ Math.floor( Math.random()*colors.length ) ], 
+				oldColor = '#ce4844'; 
+			
+			if ( e.type === 'mouseenter' )
+			{
+				span.animate({ fontSize: '100px', 
+							   color: newColor
+							});
+			}
+			else if ( e.type === 'mouseleave' )
+			{
+				span.animate({ fontSize: '114px', 
+							   color: oldColor 
+							});
+			}
+		});	
+		
+		var newText = '',
+			h1 = $('h1').text(),
+			len = h1.length;
+		
+		for (var i = 0; i < len; i++)
+		{
+			newText += '<span>' + h1.charAt(i) + '</span>';
+		}
+		
+		$('h1').html( newText );	
+	});
+	</script>
+
+	<div class="container">
+		<div class="container marketing">
+
+			<div class="row">
+				<div>				
+					<h1 style="font-size: 114px; text-shadow: 1px 1px 1px #fff;
+	font-weight: normal; color: #1b809e; word-spacing: 7px;	text-align: center;"><b>Parallel Programming</b></h1>
+					<br />
+<button class="btn btn-primary btn-lg" style=" margin-left:40%;"><a target="_blank" style="color:white; text-decoration:none; cursor:pointer;"href="https://www.survio.com/survey/d/M6Y2P8U4G0X9I1B1Y">Give me the response</a></button>
+					<div>
+						<div class="bs-callout" style="border-left-color:#ce4844;"><h4 style="color:#ce4844;">Powerful graphics card</h4><p>This is a web application running on a server with a powerful graphics card with a graphics coprocessor for parallel computing (GPU). </p></div>
+						<div class="bs-callout" style="border-left-color:#1b809e;"><h4 style="color:#1b809e;">Running projects</h4><p>The system is developed for creating, debuging and running programs written in a simple educational programming language. </p></div>
+						<div class="bs-callout" style="border-left-color:#ce4844;"><h4 style="color:#ce4844;">Educational language</h4><p>The language has a built-in support for efficient parallel computation, utilizing the computing power of GPU including SIMD parallelism. </p></div>
+						<div class="bs-callout" style="border-left-color:#1b809e;"><h4 style="color:#1b809e;">Beautiful examples</h4><p>Student can see several examples with the new language in Lectures section, where the ways of parallel programming are clearly illustrated.</p></div>
+					</div>
+				</div>			
+			</div>
+			
+		</div>
+	</div>
+	
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>

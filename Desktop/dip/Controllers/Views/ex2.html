@@ -1,0 +1,310 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<html lang="en"> 
+<head>
+	<title>DIP 2016</title>
+	<meta charset="utf-8"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/custom.css">
+	
+	<script src="./js/jquery.js"></script>
+	<script src="./js/jquery-ui.js"></script>
+	<script src="./ace/src/ace.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/theme-tomorrow_night_blue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./ace/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://kempelen.ii.fmph.uniba.sk/pario/socket.io/socket.io.js"></script>
+
+	<script>
+		var user = 0;
+		$(document).ready(function(){
+			var query = window.location.search.substring(1);
+			user = query;
+				
+			$(function() {
+				$("a").attr('href', function(i, h) {
+					if(h != 'javascript:;'){
+						return h +"?"+user;				
+					}
+				});
+			});
+		})
+			
+		function try_it(){
+			window.open('./lect_results.html?2');
+		}
+
+		function Copy(){
+			var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+			socket.emit('copy project', {id:81, user:user});
+			socket.on('copy note', function (note) {
+				socket.emit('create data file', {data:'next'});
+			});
+		}
+		
+		function open1(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "block";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "none";
+			$('#open1').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open2(){
+			document.getElementById('function_core').style.display = "block";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "none";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open3(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "block";
+			document.getElementById('function_take').style.display = "none";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"#66ffff", "text-decoration":"none"});
+			$('#open4').css({"background-color":"white", "text-decoration":"none"});
+		}
+		
+		function open4(){
+			document.getElementById('function_core').style.display = "none";
+			document.getElementById('function_start').style.display = "none";
+			document.getElementById('function_prepare').style.display = "none";
+			document.getElementById('function_take').style.display = "block";
+			$('#open1').css({"background-color":"white", "text-decoration":"none"});
+			$('#open2').css({"background-color":"white", "text-decoration":"none"});
+			$('#open3').css({"background-color":"white", "text-decoration":"none"});
+			$('#open4').css({"background-color":"#66ffff", "text-decoration":"none"});
+		}
+		
+		var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
+		socket.on('reading example', function (data) {
+			socket.emit('reading example num', { num:2});
+			socket.on('reading example result', function (read) {
+				console.log(read);
+				editor.setValue(read['file1']);
+				editor2.setValue(read['file2']);
+				editor3.setValue(read['file3']);
+				editor4.setValue(read['file4']);
+			});
+		});
+		
+		function showFunctions(){
+			$('#functions_content').show();
+			$('#lectureButtons').show();
+			$('#showing').hide();
+		}
+	</script>
+	
+</head>
+<body>
+<header class="navbar navbar-inverse">
+	<div class="container">
+		<nav role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+				</div>
+
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li><a href="welcome.html"> Home </a></li>	
+						<li><a href="lectures.html"> Lectures </a></li>						
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Projects <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+							</ul>
+						</li>	
+						<li><a href="guide.html"> Guide </a></li>						
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown"> Menu <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a href="projects.html" >My Projects</a></li>
+								<li><a href="shared_projects.html" >Shared projects</a></li>
+								<li><a href="guide.html" >Guide</a></li>
+								<li class="divider"></li>
+								<li><a href="welcome_logout.html" >Logout</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</header>
+
+	<script>
+	</script>
+
+		<div id="Content_1">
+		<h1 id="project_name">Game of Life</h1>
+		<br />
+		<div id="description">
+			Paralelné riešenie Conway´s Game of Life.<br />
+				
+				<br />
+				<div id="nextInfo" >
+				Ako ďalší príklad som si vybral Conwayovu Game of life, kde ide o celuárny automat, ktorý je postavený na mriežke buniek, <br />
+				v ktorej každá bunka má priradený jeden zo stavov živý/mŕtvy. Každá bunka sa riadi nasledovnými pravidlami:<br />
+				<br />
+				•	ak je bunka živá a má menej ako dvoch žijúcich susedov zomiera;<br />
+				•	ak je bunka živá a má dvoch alebo troch žijúcich susedov zostáva živá do ďalšej generácie;<br />
+				•	ak je bunka živá a má viac ako troch žijúcich susedov zomiera;<br />
+				•	ak je bunka mŕtva a má troch živých susedov, tak ožije.<br />
+				<br />
+				Svoj príklad som postavil na takom princípe, že každá mriežku tvorí matica prvkov, ktoré majú hodnotu 1 alebo 0. <br />
+				A ich život <i>(hodnota 1 – živá, hodnota 0 - mŕtva)</i>, už závisí na predošlom algoritme. Paralelizmus som potom vyriešil v takej podobe,<br />
+				že každému prvku matice, každej bunke mriežky, som priradil jeden procesor a každú generáciu tvorí jedna sada procesorov. <br />
+				<br />
+				Pred spustením algoritmu, programu poviem, koľko generácii chcem spustiť, každá generácia sa potom vykreslí v canvase, takým spôsobom, <br />
+				že vykreslím mriežku s bunkami, tak, že ak je bunka <b>živá = 1</b>, tak je bunka vyfarbená na bielo, ak je <b>mŕtva = 0</b>, tak je čierna.<br />
+				A pri každej generácii sa mriežka prekreslí.<br />
+				<br />
+				Algoritmus tvorí jedno vstupné a jedno výstupné pole na CPU, rovnako tak aj na GPU. Všetky polia sú dvojrozmerné. <br />
+				Vstupné pole sa v každej generácii prepíše, podľa daných pravidiel. Výstupné pole som vytvoril preto, aby som nespomaľoval <br />
+				algoritmus vykresľovaním canvasu, tak po každom cykle zapíšem aktuálnu generáciu do výstupného poľa. Výstupné pole je potom postavené<br />
+				z toľkých prvkov, koľko generácii algoritmus má vynásobené počtom prvkov v každej generácii. <br />
+				Po skončení algoritmu prebehne vykresľovanie generácii. Každá generácia má stanovený určitý čas a potom sa prekreslí ďalšou generáciou.<br />
+				<br />
+				 <img src="./images/test2.png" width=300>
+				<br />
+				<br />
+				</div>
+			<div id="structures">
+				<p>Ukážka editora na výber štruktúr</p>
+				<img src="./images/struct2.png" width=700>
+			</div>
+			<button id="showing" class="btn btn-default btn-md" onClick="showFunctions();">Show sources</button><br />
+		</div>
+		<br />
+	</div>
+	
+	<div class="container">
+		<div id="functions_content" style="display:none;">		
+		<aside>
+			<a href="javascript:;" id="open1" onclick="open1();" style="display:block;width:90%;padding:3px;">start</a>
+			<a href="javascript:;" id="open2" onclick="open2();" style="display:block;width:90%;padding:3px;">core</a>
+			<a href="javascript:;" id="open3" onclick="open3();" style="display:block;width:90%;padding:3px;">prepare_data</a>
+			<a href="javascript:;" id="open4" onclick="open4();" style="display:block;width:90%;padding:3px;">take_data</a>
+		</aside>
+	
+	<section>
+	<div class="col-xs-6" id="function_start" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor">			
+</div>	
+<!--   END OF THE CONTENT   -->		
+			<script>
+				var editor = ace.edit("editor");
+				editor.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+				editor.session.setMode(new JavaScriptMode());
+				editor.setOptions({
+					readOnly: true,
+					highlightActiveLine: false,
+					highlightGutterLine: false
+				})
+			</script>			
+	</div>
+	
+	<div class="col-xs-6" id="function_core" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor2">
+
+</div>	
+<!--   END OF THE FUNCTION HERE   -->
+			<script>
+				var editor2 = ace.edit("editor2");
+				editor2.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode = ace.require("ace/mode/c-cpp").Mode;
+				editor2.session.setMode(new JavaScriptMode());
+				editor2.setOptions({
+					readOnly: true,
+					highlightActiveLine: false,
+					highlightGutterLine: false
+				})
+			</script>			
+	</div>
+	
+	<div class="col-xs-6" id="function_prepare" style="display:none;">
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div  id="editor3">
+</div>	
+<!--   END OF THE FUNCTION HERE   -->
+			<script>
+				var editor3 = ace.edit("editor3");
+				editor3.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+				editor3.session.setMode(new JavaScriptMode());
+				editor3.setOptions({
+					readOnly: true,
+					highlightActiveLine: false,
+					highlightGutterLine: false
+				})
+			</script>			
+	</div>
+	
+	<div class="col-xs-6" id="function_take" style="display:none;">	
+<!--   CONTENT OF THIS FUNCTION HERE   -->
+<div id="editor4">		
+</div>	
+<!--   END OF THE FUNCTION HERE   -->				
+			<script>
+				var editor4 = ace.edit("editor4");
+				editor4.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+				editor4.session.setMode(new JavaScriptMode());
+				editor4.setOptions({
+					readOnly: true,
+					highlightActiveLine: false,
+					highlightGutterLine: false
+				})
+			</script>			
+	</div>
+	
+	<div class="col-xs-6" id="prepared_node" style="display:none;">
+			<div id="editor6"></div>		
+			<script>
+				var editor6 = ace.edit("editor6");
+				editor6.setTheme("ace/theme/tomorrow_night_blue");
+				var JavaScriptMode = ace.require("ace/mode/javascript").Mode;
+				editor6.session.setMode(new JavaScriptMode());
+			</script>			
+	</div>
+	
+	</section>
+	</div>
+</div>
+	<div id="lectureButtons" style="display:none;">
+		<button type="button" name="next" id="next" class="btn btn-default btn-md" onclick="try_it();">Run</button>
+		<button type="button" name="copy" id="copy" class="btn btn-default btn-md" onclick="Copy();">Copy</button>
+	</div>
+	<br />
+
+<br />
+<div class="navbar navbar-default" >
+	<div class="container">
+		<p class="navbar-text">UK FMFI 2017</p>
+	</div>
+</div>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</body>
+</html>
