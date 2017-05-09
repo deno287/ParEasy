@@ -63,9 +63,7 @@
 			$('#popis').css("height", "340px");
 		}
 	});
-	
-	
-	
+
 	var output;
 	var names;
 	var blank = true;
@@ -80,10 +78,10 @@
 		
 		var x1 = 5;
 		var y1 = 5;
-		var width = 55;
-		var height = 35;
+		var width = 50;
+		var height = 30;
 		var x2 = 7;
-		var y2 = 35;
+		var y2 = 30;
 		
 		if (text.includes("run")){
 			history_array.push(text);
@@ -114,13 +112,14 @@
 				}
 				$('#textResult').append("<br />");
 		}
+		
 		else if (text.includes("parallel.draw")){
 			history_array.push(text);
 			reload_history();
 			$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing</b>");
 			if (blank == false){
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
 			}
@@ -136,52 +135,58 @@
 			var c=document.getElementById("canvas");
 			var ctx=c.getContext("2d");
 			if (type==" 1D"){
+			console.log("SOM V 1D");
 				blank = false;
 				for (item in data){
 					ctx.strokeStyle="red";
 					ctx.rect(x1,y1,width,height);
-					ctx.font="30px Arial";
+					ctx.font="20px Arial";
 					ctx.fillStyle = "white";
 					ctx.fillText(data[item], x2, y2);
 					ctx.stroke();
-					x1 += 65;
-					x2 += 65;
+					x1 += 55;
+					x2 += 55;
 					if ((item !=0) && (item%19 == 18)){
-						y1 += 45;
-						y2 += 45;
+						y1 += 40;
+						y2 += 40;
 						x1 = 5;
 						x2 = 7;
 					}
 				}
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
+				blank = true;
 			}
 			else if ((type==" 2D") || (type=="matrix")){
-				blank = false;
+				blank = true;
 				var cols = parseInt(params[2]);
 				var rows = parseInt(params[3]);
+				var c=document.getElementById("canvas");
+				var ctx=c.getContext("2d");
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				for (item in data){
 					ctx.strokeStyle="red";
 					ctx.rect(x1,y1,width,height);
-					ctx.font="30px Arial";
+					ctx.font="20px Arial";
 					ctx.fillStyle = "white";
 					ctx.fillText(data[item], x2, y2);
 					ctx.stroke();
-					x1 += 65;
-					x2 += 65;
+					x1 += 55;
+					x2 += 55;
 					if ((item !=0) && (item%cols == (cols-1))){
-						y1 += 45;
-						y2 += 45;
+						y1 += 40;
+						y2 += 40;
 						x1 = 5;
 						x2 = 7;
 					}
 				}
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
+				blank = true;
 			}
 			else if (type==" graph"){
 				blank = false;
@@ -190,8 +195,8 @@
 				console.log(data);
 				for (var i=0; i<count; i++){
 					//if (i == 0){
-						var centerX = Math.ceil((Math.random()*(ctx.canvas.width))-10);
-						var centerY = Math.ceil((Math.random()*(ctx.canvas.height))-10);
+						var centerX = Math.ceil((Math.random()*(ctx.canvas.width-500))+50);
+						var centerY = Math.ceil((Math.random()*(ctx.canvas.height-100))+50);
 					//}
 					/*
 					else{
@@ -204,20 +209,20 @@
 							centerY = centerY+c;
 						}
 						else{
-							var centerX = Math.ceil((Math.random()*ctx.canvas.width)-10);
-							var centerY = Math.ceil((Math.random()*ctx.canvas.height)-10);
+							var centerX = Math.ceil((Math.random()*ctx.canvas.width-500)+50);
+							var centerY = Math.ceil((Math.random()*ctx.canvas.height-100)+50);
 						}
 					}
 					*/
 					nodes_array.push([centerX, centerY]);
-					var radius = 10;
+					var radius = 15;
 					ctx.beginPath();
 					ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
 					ctx.fillStyle = 'red';
 					ctx.fill();
 					ctx.fillStyle = "white";
 					ctx.font = 'italic 12pt Calibri';
-					ctx.fillText(("v"+(i+1)), centerX-5, centerY+5);
+					ctx.fillText(((i+1)), centerX-8, centerY+5);
 					ctx.lineWidth = 2;
 					ctx.strokeStyle = '#00e6e6';
 					ctx.stroke();
@@ -350,7 +355,7 @@
 						var c=document.getElementById("canvas");
 						var ctx=c.getContext("2d");
 						ctx.strokeStyle = 'red';
-						ctx.lineWidth = 1;
+						ctx.lineWidth = 2;
 						ctx.beginPath();
 						ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
 						ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
@@ -364,7 +369,7 @@
 					var c=document.getElementById("canvas");
 					var ctx=c.getContext("2d");
 					ctx.strokeStyle = 'red';
-					ctx.lineWidth = 1;
+					ctx.lineWidth = 2;
 					ctx.beginPath();
 					ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
 					ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
@@ -378,7 +383,14 @@
 			reload_history();
 			var c=document.getElementById("canvas");
 			var ctx=c.getContext("2d");
-			ctx.clearRect(0, 0, 1300, 400);
+			ctx.clearRect(0, 0, 2000, 600);
+		}
+		else if (text.includes('clearAll')){
+			history_array.push(text);
+			reload_history();
+			var c=document.getElementById("canvas");
+			var ctx=c.getContext("2d");
+			ctx.clearRect(0, 0, 2000, 600);
 			$('#textResult').empty();
 			$('#textResult').append("<i>Your result:</i>");
 			$('#textResult').append("<br />");
@@ -421,7 +433,6 @@
 	
 	function getHistory(event){
 		var x = event.key;
-		console.log(x);
 		if (x == "ArrowUp") { 
 			countOfUp += 1;
 			var command = history_array[history_array.length-countOfUp];
@@ -452,7 +463,7 @@
 </div>
 
 <div id="canvasResult" style="margin:8px;">
-	<canvas id="canvas" style="border:1px solid white;">
+	<canvas id="canvas" style="border:1px solid white; overflow:scroll;">
 	</canvas>
 	<div id="popis" style="border:3px solid white; background-color:white; float:right; color: black; overflow-y: scroll">
 	</div>
