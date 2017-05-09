@@ -295,6 +295,7 @@ io.on('connection', function(projects){
 					content_start += (line+"\n");
 				}
 			}
+			console.log(content_start);
 			
 			//var content_docas = data['file6']+content_take+content_prepare+content_start;
 			//console.log(content_docas);
@@ -443,44 +444,44 @@ io.on('connection', function(createNewProject){
 		 connection.query('INSERT INTO projects SET ?', post, function(err, result) {
 			 if (!err){
 				if (result['affectedRows'] == 1){
-							mkdirp(('./projects/'+user_id+'/'+result.insertId), function(err) {
-							});
-							mkdirp(('./projects/'+user_id+'/'+result.insertId+'/images'), function(err) {
-							});
+						console.log('tu');
+						mkdirp(('./projects/'+user_id+'/'+result.insertId), function(err) {
+						});
+						mkdirp(('./projects/'+user_id+'/'+result.insertId+'/images'), function(err) {
+						});
 														
-							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/start.js'), "", function(err) {
-								if(err) {
-									return console.log(err);
-								}
-							});
+						fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/start.js'), "", function(err) {
+							if(err) {
+								console.log(err);
+							}
 							var core_content = "void core()\n{\n}\n";
 							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/core.cl'), core_content, function(err) {
 								if(err) {
-									return console.log(err);
+									console.log(err);
 								}
-							});
-							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/prepare.js'), "", function(err) {
-								if(err) {
-									return console.log(err);
-								}
-							});
-							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/take.js'), "", function(err) {
-								if(err) {
-									return console.log(err);
-								}
-							});
-							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/plus.js'), "", function(err) {
-								if(err) {
-									return console.log(err);
-								}
-							});
-							fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/result.js'), "", function(err) {
-								if(err) {
-									return console.log(err);
-								}
-							});
-							
-					createNewProject.emit('createResult', {reload: true, id: result.insertId });		
+								fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/prepare.js'), "", function(err) {
+									if(err) {
+										console.log(err);
+									}
+									fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/take.js'), "", function(err) {
+										if(err) {
+											console.log(err);
+										}
+										fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/plus.js'), "", function(err) {
+											if(err) {
+												console.log(err);
+											}
+											fs.writeFile(('./projects/'+user_id+'/'+result.insertId+'/result.js'), "", function(err) {
+												if(err) {
+													console.log(err);
+												}
+											});
+										});
+									});
+								});
+							});							
+						});							
+						createNewProject.emit('createResult', {reload: true, id: result.insertId });		
 				}
 				else{
 					createNewProject.emit('createResult', {reload: false});
