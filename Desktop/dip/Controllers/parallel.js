@@ -15,7 +15,7 @@ module.exports = {
 		var item = new Uint32Array(range);
 
 		for (var i = 0; i < range; i++){
-			var randomnumber=Math.ceil(Math.random()*999)
+			var randomnumber=Math.ceil(Math.random()*99)
 			item[i] = randomnumber;
 		}
 		//var length = Uint32Array.BYTES_PER_ELEMENT * item.length;
@@ -32,7 +32,7 @@ module.exports = {
 				item.push([]);
 				item[i] = new Uint32Array(range2);
 				for (var j = 0; j < range2; j++){
-					var randomnumber=Math.ceil(Math.random()*999)
+					var randomnumber=Math.ceil(Math.random()*99)
 					item[i][j] = randomnumber;
 				}
 			}
