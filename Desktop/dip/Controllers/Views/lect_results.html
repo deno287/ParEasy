@@ -116,8 +116,8 @@
 			reload_history();
 			$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing</b>");
 			if (blank == false){
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
 			}
@@ -133,107 +133,211 @@
 			var c=document.getElementById("canvas");
 			var ctx=c.getContext("2d");
 			if (type==" 1D"){
+			console.log("SOM V 1D");
 				blank = false;
 				for (item in data){
 					ctx.strokeStyle="red";
 					ctx.rect(x1,y1,width,height);
-					ctx.font="30px Arial";
+					ctx.font="20px Arial";
 					ctx.fillStyle = "white";
 					ctx.fillText(data[item], x2, y2);
 					ctx.stroke();
-					x1 += 65;
-					x2 += 65;
+					x1 += 55;
+					x2 += 55;
 					if ((item !=0) && (item%19 == 18)){
-						y1 += 45;
-						y2 += 45;
+						y1 += 40;
+						y2 += 40;
 						x1 = 5;
 						x2 = 7;
 					}
 				}
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
+				blank = true;
 			}
 			else if ((type==" 2D") || (type=="matrix")){
-				blank = false;
+				blank = true;
 				var cols = parseInt(params[2]);
 				var rows = parseInt(params[3]);
+				var c=document.getElementById("canvas");
+				var ctx=c.getContext("2d");
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				for (item in data){
 					ctx.strokeStyle="red";
 					ctx.rect(x1,y1,width,height);
-					ctx.font="30px Arial";
+					ctx.font="20px Arial";
 					ctx.fillStyle = "white";
 					ctx.fillText(data[item], x2, y2);
 					ctx.stroke();
-					x1 += 65;
-					x2 += 65;
+					x1 += 55;
+					x2 += 55;
 					if ((item !=0) && (item%cols == (cols-1))){
-						y1 += 45;
-						y2 += 45;
+						y1 += 40;
+						y2 += 40;
 						x1 = 5;
 						x2 = 7;
 					}
 				}
-				y1 += 45;
-				y2 += 45;
+				y1 += 40;
+				y2 += 40;
 				x1 = 5;
 				x2 = 7;
+				blank = true;
 			}
 			else if (type==" graph"){
 				blank = false;
 				var count = Object.keys(data).length;
 				count = Math.sqrt(count);
-				console.log(data);
-				for (var i=0; i<count; i++){
-					//if (i == 0){
-						var centerX = Math.ceil((Math.random()*(ctx.canvas.width))-10);
-						var centerY = Math.ceil((Math.random()*(ctx.canvas.height))-10);
-					//}
-					/*
-					else{
-						if ((data[(i-1)+i*count] != 50) && (data[(i-1)+i*count] != 0) ){
-							var centerX = nodes_array[i-1][0];
-							var centerY = nodes_array[i-1][1];
-							var distance = (data[(i-1)+i*count])/2;
-							var c = distance*30;
-							centerX = centerX+c;
-							centerY = centerY+c;
-						}
-						else{
-							var centerX = Math.ceil((Math.random()*ctx.canvas.width)-10);
-							var centerY = Math.ceil((Math.random()*ctx.canvas.height)-10);
-						}
+				var centerX = 100;
+				var centerY = 50;
+				if (project == 4){
+					for (var i=0; i<count; i++){
+							if(i == 1){
+								centerX = 400;
+								centerY = 120;
+							}
+							else if(i == 2){
+								centerX = 360;
+								centerY = 170;
+							}
+							else if(i == 3){
+								centerX = 600;
+								centerY = 190;
+							}
+							else if(i == 4){
+								centerX = 150;
+								centerY = 240;
+							}
+							else if(i == 5){
+								centerX = 380;
+								centerY = 290;
+							}
+							else if(i == 6){
+								centerX = 330;
+								centerY = 350;
+							}
+							else if(i == 7){
+								centerX = 120;
+								centerY = 290;
+							}
+							else if(i == 8){
+								centerX = 100;
+								centerY = 190;
+							}
+							else if(i == 9){
+								centerX = 40;
+								centerY = 230;
+							}
+							else if(i == 10){
+								centerX = 70;
+								centerY = 170;
+							}
+							else if(i == 11){
+								centerX = 20;
+								centerY = 170;
+							}
+							else if(i == 12){
+								centerX = 30;
+								centerY = 70;
+							}
+							else if(i == 13){
+								centerX = 90;
+								centerY = 120;
+							}
+
+						nodes_array.push([centerX, centerY]);
+						var radius = 15;
+						ctx.beginPath();
+						ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+						ctx.fillStyle = 'red';
+						ctx.fill();
+						ctx.fillStyle = "white";
+						ctx.font = 'italic 12pt Calibri';
+						ctx.fillText(((i+1)), centerX-8, centerY+5);
+						ctx.lineWidth = 2;
+						ctx.strokeStyle = '#00e6e6';
+						ctx.stroke();
 					}
-					*/
-					nodes_array.push([centerX, centerY]);
-					var radius = 10;
-					ctx.beginPath();
-					ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-					ctx.fillStyle = 'red';
-					ctx.fill();
-					ctx.fillStyle = "white";
-					ctx.font = 'italic 12pt Calibri';
-					ctx.fillText(("v"+(i+1)), centerX-5, centerY+5);
-					ctx.lineWidth = 2;
-					ctx.strokeStyle = '#00e6e6';
-					ctx.stroke();
+				}
+				else{
+					for (var i=0; i<count; i++){
+						//if (i == 0){
+							var centerX = Math.ceil((Math.random()*(ctx.canvas.width-500))+50);
+							var centerY = Math.ceil((Math.random()*(ctx.canvas.height-100))+50);
+						//}
+						/*
+						else{
+							if ((data[(i-1)+i*count] != 50) && (data[(i-1)+i*count] != 0) ){
+								var centerX = nodes_array[i-1][0];
+								var centerY = nodes_array[i-1][1];
+								var distance = (data[(i-1)+i*count])/2;
+								var c = distance*30;
+								centerX = centerX+c;
+								centerY = centerY+c;
+							}
+							else{
+								var centerX = Math.ceil((Math.random()*ctx.canvas.width)-10);
+								var centerY = Math.ceil((Math.random()*ctx.canvas.height)-10);
+							}
+						}
+						*/
+						nodes_array.push([centerX, centerY]);
+						var radius = 15;
+						ctx.beginPath();
+						ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+						ctx.fillStyle = 'red';
+						ctx.fill();
+						ctx.fillStyle = "white";
+						ctx.font = 'italic 12pt Calibri';
+						ctx.fillText(((i+1)), centerX-8, centerY+5);
+						ctx.lineWidth = 2;
+						ctx.strokeStyle = '#00e6e6';
+						ctx.stroke();
+					}
 				}
 				var row = 0;
 				var infinity = count*10;
-				while (row < count){
-					for (var col=0; col<count; col++){
-						if (row != col){
-							var object = (row*count)+col;
-							if ((data[object] != 0) && (data[object] != infinity)){
+				if (project == 4){
+					while (row < count){
+						for (var col=0; col<count; col++){
+							var object = data[(row*count)+col];
+							if (object != 0){
+								ctx.lineWidth = 1;
+								ctx.beginPath();
+								ctx.moveTo((nodes_array[row][0]-5), (nodes_array[row][1]+5));
+								ctx.lineTo((nodes_array[object-1][0]-5), (nodes_array[object-1][1]+5));
+								ctx.stroke();
+							}
+							/*
+							if ((data[object] != 0)){
 								ctx.beginPath();
 								ctx.moveTo((nodes_array[row][0]-5), (nodes_array[row][1]+5));
 								ctx.lineTo((nodes_array[col][0]-5), (nodes_array[col][1]+5));
 								ctx.stroke();
 							}
+							*/
 						}
+						row++;
+				}
+				}
+				else{
+					ctx.lineWidth = 2;
+					while (row < count){
+						for (var col=0; col<count; col++){
+							if (row != col){
+								var object = (row*count)+col;
+								if ((data[object] != 0) && (data[object] != infinity)){
+									ctx.beginPath();
+									ctx.moveTo((nodes_array[row][0]-5), (nodes_array[row][1]+5));
+									ctx.lineTo((nodes_array[col][0]-5), (nodes_array[col][1]+5));
+									ctx.stroke();
+								}
+							}
+						}
+						row++;
 					}
-					row++;
 				}
 			}
 			else if ((type==" bin")){
@@ -292,54 +396,86 @@
 			}
 		}
 		else if(text.includes('parallel.showPath')){
-			history_array.push(text);
-			reload_history();
-			var roads = output[0];
-			$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing path</b>");
-			
-			if (pathArray != []){
-				if (kreslim == false){	
-					console.log(kreslim);
+			if (project == 4){
+				$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing Hamilton path</b>");
+				var c=document.getElementById("canvas");
+				var ctx=c.getContext("2d");
+				for (var node = 0; node < 13; node++){
+					ctx.strokeStyle = 'orange';
+					ctx.lineWidth = 2;
+					ctx.beginPath();
+					ctx.moveTo((nodes_array[node][0]-5), (nodes_array[node][1]+5));
+					ctx.lineTo((nodes_array[node+1][0]-5), (nodes_array[node+1][1]+5));
+					ctx.stroke();
 				}
-				else{
-					for (var j = 0; j < pathArray.length-1; j++){
-						var node1 = pathArray[j];
-						var node2 = pathArray[j+1];
-						var c=document.getElementById("canvas");
-						var ctx=c.getContext("2d");
-							
-						//ctx.clearRect(nodes_array[node1][0]-5, nodes_array[node1][1]+5, nodes_array[node2][0]-5, canvasHeight);
-							
-						ctx.strokeStyle = '#00e6e6';
-						ctx.lineWidth = 2;
-						ctx.beginPath();
-						ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
-						ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
-						ctx.stroke();
+				ctx.beginPath();
+				ctx.moveTo((nodes_array[13][0]-5), (nodes_array[13][1]+5));
+				ctx.lineTo((nodes_array[0][0]-5), (nodes_array[0][1]+5));
+				ctx.stroke();
+			}
+			else{
+				history_array.push(text);
+				reload_history();
+				var roads = output[0];
+				$('#timePast').html("<i>State: </i> <b style='color:green;'>drawing path</b>");
+				
+				if (pathArray != []){
+					if (kreslim == false){	
+						console.log(kreslim);
+					}
+					else{
+						for (var j = 0; j < pathArray.length-1; j++){
+							var node1 = pathArray[j];
+							var node2 = pathArray[j+1];
+							var c=document.getElementById("canvas");
+							var ctx=c.getContext("2d");
+								
+							//ctx.clearRect(nodes_array[node1][0]-5, nodes_array[node1][1]+5, nodes_array[node2][0]-5, canvasHeight);
+								
+							ctx.strokeStyle = '#00e6e6';
+							ctx.lineWidth = 2;
+							ctx.beginPath();
+							ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
+							ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
+							ctx.stroke();
+						}
 					}
 				}
-			}
-			pathArray = [];
-			text = text.split("parallel.showPath");
-			text = text[1].split("(");
-			text = text[1].split(")");
-			var params = text[0].split(",");
-			var matrix = (params[0]);
-			var index = names.indexOf(matrix);
-			var data = output[index];
-			var V1 = params[1]-1;
-			var V2 = params[2]-1;
-			var count = nodes_array.length;
-			
-			path(data, V1, V2, count);
-			
-			for (var j = 0; j < pathArray.length-1; j++){
-				if (pathArray.length == 2){
-					console.log(V2, V1);
-					if (roads[V2+V1*count] == (count*10)){
-						$('#textResult').append("<span>Cesta, ktorú hľadáš neexistuje.</span>");
-						$('#textResult').append("<br />");
-						kreslim = false;
+				pathArray = [];
+				text = text.split("parallel.showPath");
+				text = text[1].split("(");
+				text = text[1].split(")");
+				var params = text[0].split(",");
+				var matrix = (params[0]);
+				var index = names.indexOf(matrix);
+				var data = output[index];
+				var V1 = params[1]-1;
+				var V2 = params[2]-1;
+				var count = nodes_array.length;
+				
+				path(data, V1, V2, count);
+				
+				for (var j = 0; j < pathArray.length-1; j++){
+					if (pathArray.length == 2){
+						console.log(V2, V1);
+						if (roads[V2+V1*count] == (count*10)){
+							$('#textResult').append("<span>Cesta, ktorú hľadáš neexistuje.</span>");
+							$('#textResult').append("<br />");
+							kreslim = false;
+						}
+						else{
+							var node1 = pathArray[j];
+							var node2 = pathArray[j+1];
+							var c=document.getElementById("canvas");
+							var ctx=c.getContext("2d");
+							ctx.strokeStyle = 'red';
+							ctx.lineWidth = 2;
+							ctx.beginPath();
+							ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
+							ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
+							ctx.stroke();
+							kreslim = true;
+						}
 					}
 					else{
 						var node1 = pathArray[j];
@@ -347,26 +483,13 @@
 						var c=document.getElementById("canvas");
 						var ctx=c.getContext("2d");
 						ctx.strokeStyle = 'red';
-						ctx.lineWidth = 1;
+						ctx.lineWidth = 2;
 						ctx.beginPath();
 						ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
 						ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
 						ctx.stroke();
 						kreslim = true;
 					}
-				}
-				else{
-					var node1 = pathArray[j];
-					var node2 = pathArray[j+1];
-					var c=document.getElementById("canvas");
-					var ctx=c.getContext("2d");
-					ctx.strokeStyle = 'red';
-					ctx.lineWidth = 1;
-					ctx.beginPath();
-					ctx.moveTo((nodes_array[node1][0]-5), (nodes_array[node1][1]+5));
-					ctx.lineTo((nodes_array[node2][0]-5), (nodes_array[node2][1]+5));
-					ctx.stroke();
-					kreslim = true;
 				}
 			}
 		}
@@ -375,7 +498,14 @@
 			reload_history();
 			var c=document.getElementById("canvas");
 			var ctx=c.getContext("2d");
-			ctx.clearRect(0, 0, 1300, 400);
+			ctx.clearRect(0, 0, 2000, 600);
+		}
+		else if (text.includes('clearAll')){
+			history_array.push(text);
+			reload_history();
+			var c=document.getElementById("canvas");
+			var ctx=c.getContext("2d");
+			ctx.clearRect(0, 0, 2000, 600);
 			$('#textResult').empty();
 			$('#textResult').append("<i>Your result:</i>");
 			$('#textResult').append("<br />");
@@ -385,6 +515,7 @@
 			reload_history();
 			var res = eval(text);
 			$('#textResult').append("<span>"+res+"</span>");
+			$('#textResult').append("<br />");
 		}
 		
 	}
@@ -417,12 +548,12 @@
 	
 	function getHistory(event){
 		var x = event.key;
-		console.log(x);
 		if (x == "ArrowUp") { 
 			countOfUp += 1;
 			var command = history_array[history_array.length-countOfUp];
 			$('#text').val("");
 			$('#text').val(command);
+			console.log(command);
 		}
 		else if (x == "Enter") { 
 			countOfUp = 0;
@@ -440,7 +571,7 @@
 </head>
 <body>
 <h1 id="title" style="text-align:center; margin-top:3px;"></h1>
-<div id="textResult" style="margin:8px; width:99%; height:15%; border:1px solid white;">
+<div id="textResult" style="margin:8px; width:99%; height:15%; border:1px solid white; overflow-y: scroll; padding-left:5px;">
 <p><i> Your result:</i></p><br />
 </div>
 
@@ -450,7 +581,7 @@
 <div id="canvasResult" style="margin:8px;">
 	<canvas id="canvas" style="border:1px solid white;">
 	</canvas>
-	<div id="popis" style="border:3px solid white; background-color:white; float:right; color: black;">
+	<div id="popis" style="border:3px solid white; background-color:white; float:right; color: black; overflow-y: scroll">
 	</div>
 </div>
 
@@ -458,7 +589,7 @@
 <div id="history" style=" padding:5px; margin:8px; height:110px; border:1px solid white; background-color:yellow; color: black; margin-bottom:0px;">
 </div>
 
-<textarea id="text" onkeydown="getHistory(event)"; style="margin:8px; color:black; border:1px solid green;" placeholder=" Type your command... ">
+<textarea id="text" onkeydown="getHistory(event)" style="margin:8px; color:black; border:1px solid green;" placeholder=" Type your command... ">
 </textarea>
 </body>
 </html>
