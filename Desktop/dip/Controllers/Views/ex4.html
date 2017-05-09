@@ -35,7 +35,7 @@
 
 		function Copy(){
 			var socket = io('http://kempelen.ii.fmph.uniba.sk', {path: '/pario/socket.io'});
-			socket.emit('copy project', {id:81, user:user});
+			socket.emit('copy project', {id:4, user:user});
 			socket.on('copy note', function (note) {
 				socket.emit('create data file', {data:'next'});
 			});
@@ -91,7 +91,7 @@
 			socket.on('reading example result', function (read) {
 				console.log(read);
 				editor.setValue(read['file1']);
-				editor2.setValue(read['file2']);
+				//editor2.setValue(read['file2']);
 				editor3.setValue(read['file3']);
 				editor4.setValue(read['file4']);
 			});
@@ -117,7 +117,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+					<h4 class="nav" style="color:white; font-size:160%;">ParEasy</h4>
 				</div>
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -155,7 +155,7 @@
 	</script>
 
 		<div id="Content_1">
-		<h1 id="project_name">Hamiltonova kružnica</h1>
+		<h1 id="project_name">Hamiltonovská kružnica</h1>
 		<br />
 		<div id="description">
 			Tento program rieši algoritmus na hľadanie kružnice v grafe.<br />
@@ -236,7 +236,149 @@
 	<div class="col-xs-6" id="function_core" style="display:none;">
 <!--   CONTENT OF THIS FUNCTION HERE   -->
 <div id="editor2">
+void core(uint *entering, uint *number, uint *graph, uint *nodes, uint *circle, uint *emptySlot, uint *requestedSlot, uint *numberOfJobs, uint *workersWaiting, uint *slotLength, uint *front)
+{
 
+	int id = getWorkerNumber(0);
+	int size = getWorkersCount(0);
+	int count = *nodes;	
+	int path[14];
+	int p_index[14];
+	int pathLen = 0;
+	bool hasWork = false;
+
+	if (id == 0){
+		path[0] = 1;
+		pathLen = 1;
+		p_index[0] = 0;
+		hasWork = true;
+	}
+
+	while((circle[0] == -1) && !((workersWaiting[0] == count) && (numberOfJobs[0] == count)))
+        {
+		
+	
+		if (hasWork)
+                {
+			if (pathLen == slotLength[id])
+			{
+				hasWork = false;
+                                lock(id, entering, number);
+                                workersWaiting[0]++;
+                                unlock(id, number);
+			}
+
+			else if (pathLen != count)
+                        {
+				bool nextVertexIsNew = true;
+				do {
+					int nextVertex = graph[(p_index[pathLen-1])+(path[pathLen-1])*count];
+					if (nextVertex == 0) break;
+					for (int i = 0; i < pathLen; i++)
+                                        {
+						if (path[i] == nextVertex)
+                                                {
+							nextVertexIsNew = false;
+							p_index[pathLen - 1]++;
+							break;
+						}
+					}
+				} while (nextVertexIsNew);
+
+				if (nextVertex == 0){
+					pathLen--;
+				}
+				else
+				{
+					path[pathLen] = nextVertex;
+					p_index[pathLen]++;
+					pathLen++;
+					if (emptySlot[id]){
+						for (int i = 0; i < pathLen; i++)
+                                                {
+							front[i+id*count] = path[i];
+						}
+						slotLength[id] = pathLen - 1;
+						emptySlot[id] = 0;
+						atomic_inc(numberOfJobs[0]);
+						requestedSlot[id] = 0;
+						pathLen--;
+					}
+				}
+
+
+			}
+			else{ 
+				for (int i = 0; i < count; i++)
+                                {
+					circle[i] = path[i];
+				}
+			}
+
+		}
+
+
+
+
+		else{
+			for(int i=0; i < size; i++)
+                        {
+				lock(id, entering, number);
+                                requestedSlot[i] = 1;
+				int busy = 1;
+                                unlock(id, number);
+				if (busy == 0){
+					hasWork = true;
+					lock(id, entering, number);
+                                	workersWaiting[0]--;
+                                	unlock(id, number);
+					for (int j = 0; j < slotLength[i]; j++)
+                                        {
+						path[j] = front[j+i*count];
+					}
+					pathLen = slotLength[i]+1;
+					p_index[pathLen-1] = 0;
+					emptySlot[i] = true;
+					lock(id, entering, number);
+                                	numberOfJobs[0]--;
+                                	unlock(id, number);
+					break;
+				}
+			}
+		}
+
+	}
+
+}
+
+int lock(int i, uint *entering, uint *number) {
+      	entering[i] = 1;
+      	uint max = 0;
+      	for (int j = 0; j < 14; j++)
+	{
+         	if (max < number[j]) max = number[j];
+	}
+      	number[i] = 1 + max;
+      	entering[i] = 0;
+
+      	for (int j = 1; j <= 14; j++) 
+	{
+          	while (entering[j]) 
+		{ 
+			/* nothing */ 
+		}
+         	while ((number[j] != 0) && ( (number[j] < number[i]) || ((number[j] == number[i]) && (j < i)))) 
+		{ 
+			/* nothing */
+		}
+      	}
+	return 1;
+}
+
+int  unlock(int i, uint *number) {
+	number[i] = 0;
+	return 0;
+}
 </div>	
 <!--   END OF THE FUNCTION HERE   -->
 			<script>
