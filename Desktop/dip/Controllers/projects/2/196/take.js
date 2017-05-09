@@ -1,0 +1,1 @@
+var bufferA = [];var bufferB = [];var bufferC = [];parallel.read(matrixC, matrixA);

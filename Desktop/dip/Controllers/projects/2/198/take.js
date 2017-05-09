@@ -1,0 +1,1 @@
+var bufSused = [];var bufNavrh = [];
