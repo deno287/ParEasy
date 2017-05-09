@@ -52,7 +52,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<h4 class="nav" style="color:white; font-size:160%;">Parallel programming</h4>
+					<h4 class="nav" style="color:white; font-size:160%;">ParEasy</h4>
 				</div>
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -120,7 +120,39 @@
 			newText += '<span>' + h1.charAt(i) + '</span>';
 		}
 		
-		$('h1').html( newText );	
+		$('h1').html( newText );
+
+
+		$('#subTitle').delegate('span', 'mouseenter mouseleave', function(e)
+		{
+			var span = $(this),
+				newColor = colors[ Math.floor( Math.random()*colors.length ) ], 
+				oldColor = '#1b809e'; 
+			
+			if ( e.type === 'mouseenter' )
+			{
+				span.animate({ fontSize: '40px', 
+							   color: newColor
+							});
+			}
+			else if ( e.type === 'mouseleave' )
+			{
+				span.animate({ fontSize: '32px', 
+							   color: oldColor 
+							});
+			}
+		});	
+		
+		var newText = '',
+			 p = $('#subTitle').text(),
+			len = p.length;
+		
+		for (var i = 0; i < len; i++)
+		{
+			newText += '<span>' + p.charAt(i) + '</span>';
+		}
+		
+		$('#subTitle').html( newText );	
 	});
 	</script>
 	
@@ -132,7 +164,8 @@
 			<div class="row">
 				<div>				
 					<h1 style="font-size: 114px; text-shadow: 1px 1px 1px #fff;
-	font-weight: normal; color: #1b809e; word-spacing: 7px;	text-align: center;"><b>Parallel Programming</b></h1>
+	font-weight: normal; color: #1b809e; word-spacing: 7px;	text-align: center;"><b>ParEasy</b></h1>
+<p id="subTitle" style="text-align:center; color:#ce4844; font-size:32px;">making GPU parallel programming easy</p>
 					<br />
 					<div>
 						<div class="bs-callout" style="border-left-color:#ce4844;"><h4 style="color:#ce4844;">Powerful graphics card</h4><p>This is a web application running on a server with a powerful graphics card with a graphics coprocessor for parallel computing (GPU). </p></div>
